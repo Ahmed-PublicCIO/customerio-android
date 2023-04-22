@@ -53,8 +53,13 @@ internal class QueueRunnerImpl(
 
     private suspend fun trackEvent(task: QueueTask): QueueRunTaskResult? {
         val taskData: TrackEventQueueTaskData = jsonAdapter.fromJsonOrNull(task.data) ?: return null
-
-        return cioHttpClient.track(taskData.identifier, taskData.event)
+        return if (taskData.identifier?.isNotEmpty() == true) {
+            cioHttpClient.track(taskData.identifier, taskData.event)
+        } else if (taskData.anonymousId?.isNotEmpty() == true) {
+            cioHttpClient.trackAnonymous(taskData.event)
+        } else {
+            null
+        }
     }
 
     private suspend fun deleteDeviceToken(task: QueueTask): QueueRunTaskResult? {

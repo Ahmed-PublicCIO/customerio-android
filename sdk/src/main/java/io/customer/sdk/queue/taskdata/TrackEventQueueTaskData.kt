@@ -5,6 +5,7 @@ import io.customer.sdk.data.request.Event
 
 @JsonClass(generateAdapter = true)
 internal data class TrackEventQueueTaskData(
-    val identifier: String,
+    val identifier: String?,
+    val anonymousId: String?,
     val event: Event
 )

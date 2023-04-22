@@ -3,7 +3,13 @@ package io.customer.sdk.queue
 import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.data.model.CustomAttributes
 import io.customer.sdk.data.model.EventType
-import io.customer.sdk.data.request.*
+import io.customer.sdk.data.request.DeliveryEvent
+import io.customer.sdk.data.request.DeliveryPayload
+import io.customer.sdk.data.request.DeliveryType
+import io.customer.sdk.data.request.Device
+import io.customer.sdk.data.request.Event
+import io.customer.sdk.data.request.Metric
+import io.customer.sdk.data.request.MetricEvent
 import io.customer.sdk.queue.taskdata.DeletePushNotificationQueueTaskData
 import io.customer.sdk.queue.taskdata.IdentifyProfileQueueTaskData
 import io.customer.sdk.queue.taskdata.RegisterPushNotificationQueueTaskData
@@ -12,7 +18,12 @@ import io.customer.sdk.queue.type.QueueModifyResult
 import io.customer.sdk.queue.type.QueueStatus
 import io.customer.sdk.queue.type.QueueTaskGroup
 import io.customer.sdk.queue.type.QueueTaskType
-import io.customer.sdk.util.*
+import io.customer.sdk.util.DateUtil
+import io.customer.sdk.util.DispatchersProvider
+import io.customer.sdk.util.JsonAdapter
+import io.customer.sdk.util.Logger
+import io.customer.sdk.util.Seconds
+import io.customer.sdk.util.SimpleTimer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -24,7 +35,8 @@ interface Queue {
     ): QueueModifyResult
 
     fun queueTrack(
-        identifiedProfileId: String,
+        identifiedProfileId: String? = null,
+        anonymousId: String? = null,
         name: String,
         eventType: EventType,
         attributes: CustomAttributes
@@ -173,7 +185,8 @@ internal class QueueImpl internal constructor(
     }
 
     override fun queueTrack(
-        identifiedProfileId: String,
+        identifiedProfileId: String?,
+        anonymousId: String?,
         name: String,
         eventType: EventType,
         attributes: CustomAttributes
@@ -182,13 +195,22 @@ internal class QueueImpl internal constructor(
             name = name,
             type = eventType,
             data = attributes,
-            timestamp = dateUtil.nowUnixTimestamp
+            timestamp = dateUtil.nowUnixTimestamp,
+            anonymousId = anonymousId
         )
 
         return addTask(
             QueueTaskType.TrackEvent,
-            TrackEventQueueTaskData(identifiedProfileId, event),
-            blockingGroups = listOf(QueueTaskGroup.IdentifyProfile(identifiedProfileId))
+            TrackEventQueueTaskData(identifiedProfileId, anonymousId, event),
+            blockingGroups = if (identifiedProfileId == null) {
+                null
+            } else {
+                listOf(
+                    QueueTaskGroup.IdentifyProfile(
+                        identifiedProfileId
+                    )
+                )
+            }
         )
     }
 
@@ -238,14 +260,13 @@ internal class QueueImpl internal constructor(
         val isChangingIdentifiedProfile = oldIdentifier != null && oldIdentifier != newIdentifier
 
         // If SDK previously identified profile X and X is being identified again, no use blocking the queue with a queue group.
-        val queueGroupStart =
-            if (isFirstTimeIdentifying || isChangingIdentifiedProfile) {
-                QueueTaskGroup.IdentifyProfile(
-                    newIdentifier
-                )
-            } else {
-                null
-            }
+        val queueGroupStart = if (isFirstTimeIdentifying || isChangingIdentifiedProfile) {
+            QueueTaskGroup.IdentifyProfile(
+                newIdentifier
+            )
+        } else {
+            null
+        }
         // If there was a previously identified profile, or, we are just adding attributes to an existing profile, we need to wait for
         // this operation until the previous identify runs successfully.
         val blockingGroups =
