@@ -25,6 +25,12 @@ internal interface CustomerIOService {
     ): Response<Unit>
 
     @JvmSuppressWildcards
+    @POST("api/v1/events")
+    suspend fun trackAnonymous(
+        @Body body: Event
+    ): Response<Unit>
+
+    @JvmSuppressWildcards
     @POST("push/events")
     suspend fun trackMetric(
         @Body body: Metric
