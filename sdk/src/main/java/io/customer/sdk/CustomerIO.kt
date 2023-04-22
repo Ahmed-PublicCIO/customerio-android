@@ -37,6 +37,8 @@ interface CustomerIOInstance {
     var profileAttributes: CustomAttributes
     var deviceAttributes: CustomAttributes
 
+    var anonymousId: String?
+
     fun identify(identifier: String)
 
     fun identify(
@@ -237,6 +239,7 @@ class CustomerIO internal constructor(
                 is Int -> {
                     setBackgroundQueueMinNumberOfTasks(backgroundQueueMinNumberOfTasks = minNumberOfTasks)
                 }
+
                 is Double -> {
                     setBackgroundQueueMinNumberOfTasks(backgroundQueueMinNumberOfTasks = minNumberOfTasks.toInt())
                 }
@@ -534,6 +537,11 @@ class CustomerIO internal constructor(
             field = value
 
             deviceRepository.addCustomDeviceAttributes(value)
+        }
+
+    override var anonymousId: String? = null
+        set(value) {
+            profileRepository.setAnonymousId(value)
         }
 
     private fun recordScreenViews(activity: Activity, attributes: CustomAttributes) {
