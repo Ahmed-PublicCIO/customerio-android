@@ -1,5 +1,6 @@
 package io.customer.sdk.data.request
 
+import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import io.customer.sdk.data.model.CustomAttributes
 import io.customer.sdk.data.model.EventType
@@ -9,5 +10,6 @@ internal data class Event(
     val name: String,
     val type: EventType,
     val data: CustomAttributes,
+    @field:Json(name = "anonymous_id") val anonymousId: String? = null,
     val timestamp: Long? = null
 )
