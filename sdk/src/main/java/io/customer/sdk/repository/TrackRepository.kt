@@ -17,6 +17,7 @@ interface TrackRepository {
         event: MetricEvent,
         metadata: Map<String, String> = emptyMap()
     )
+
     fun screen(name: String, attributes: CustomAttributes)
 }
 
@@ -43,14 +44,29 @@ internal class TrackRepositoryImpl(
         logger.debug("$eventTypeDescription $name attributes: $attributes")
 
         val identifier = sitePreferenceRepository.getIdentifier()
-        if (identifier == null) {
-            // when we have anonymous profiles implemented in the SDK, we can decide to not
-            // ignore events when a profile is not logged in yet.
-            logger.info("ignoring $eventTypeDescription $name because no profile currently identified")
+        val anonymousId = sitePreferenceRepository.getAnonymousId()
+
+        if (identifier == null && anonymousId == null) {
+            // ignore events when a profile is not logged in yet nor an anonymous id is set
+            logger.info("ignoring $eventTypeDescription $name because no profile currently identified nor anonymous id set")
             return
         }
 
-        val queueStatus = backgroundQueue.queueTrack(identifier, name, eventType, attributes)
+        val queueStatus = if (identifier != null) {
+            backgroundQueue.queueTrack(
+                identifiedProfileId = identifier,
+                name = name,
+                eventType = eventType,
+                attributes = attributes
+            )
+        } else {
+            backgroundQueue.queueTrack(
+                anonymousId = anonymousId,
+                name = name,
+                eventType = eventType,
+                attributes = attributes
+            )
+        }
 
         if (queueStatus.success && eventType == EventType.screen) {
             hooksManager.onHookUpdate(

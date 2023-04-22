@@ -8,6 +8,7 @@ import io.customer.sdk.repository.preference.SitePreferenceRepository
 import io.customer.sdk.util.Logger
 
 interface ProfileRepository {
+    fun setAnonymousId(anonymousId: String?)
     fun identify(identifier: String, attributes: CustomAttributes)
     fun clearIdentify()
     fun addCustomProfileAttributes(attributes: CustomAttributes)
@@ -21,11 +22,18 @@ internal class ProfileRepositoryImpl(
     private val hooksManager: HooksManager
 ) : ProfileRepository {
 
+    override fun setAnonymousId(anonymousId: String?) {
+        anonymousId?.let { sitePreferenceRepository.saveAnonymousId(it) }
+    }
+
     override fun identify(identifier: String, attributes: CustomAttributes) {
+        val profileAttributes = attributes.toMutableMap()
+
         logger.info("identify profile $identifier")
-        logger.debug("identify profile $identifier, $attributes")
+        logger.debug("identify profile $identifier, $profileAttributes")
 
         val currentlyIdentifiedProfileIdentifier = sitePreferenceRepository.getIdentifier()
+
         // The SDK calls identify() with the already identified profile for changing profile attributes.
         val isChangingIdentifiedProfile =
             currentlyIdentifiedProfileIdentifier != null && currentlyIdentifiedProfileIdentifier != identifier
@@ -37,13 +45,22 @@ internal class ProfileRepositoryImpl(
 
                 logger.debug("deleting device token before identifying new profile")
                 deviceRepository.deleteDeviceToken()
+                logger.debug("deleting anonymousId before identifying new profile")
+                sitePreferenceRepository.removeAnonymousId()
             }
+        }
+
+        val anonymousId = sitePreferenceRepository.getAnonymousId()
+
+        if (anonymousId != null) {
+            logger.debug("adding anonymousId to profile attributes")
+            profileAttributes["anonymous_id"] = anonymousId
         }
 
         val queueStatus = backgroundQueue.queueIdentifyProfile(
             identifier,
             currentlyIdentifiedProfileIdentifier,
-            attributes
+            profileAttributes
         )
 
         // Don't modify the state of the SDK's data until we confirm we added a queue task successfully. This could put the Customer.io API
@@ -109,6 +126,7 @@ internal class ProfileRepositoryImpl(
 
         // delete identified from device storage to not associate future SDK calls to this profile
         logger.debug("clearing profile from device storage")
-        sitePreferenceRepository.removeIdentifier(currentlyIdentifiedProfileId)
+        sitePreferenceRepository.removeIdentifier()
+        sitePreferenceRepository.removeAnonymousId()
     }
 }
