@@ -6,6 +6,7 @@ import io.customer.sdk.data.request.Metric
 import io.customer.sdk.extensions.valueOfOrNull
 import io.customer.sdk.queue.taskdata.DeletePushNotificationQueueTaskData
 import io.customer.sdk.queue.taskdata.IdentifyProfileQueueTaskData
+import io.customer.sdk.queue.taskdata.MergeProfileQueueTaskData
 import io.customer.sdk.queue.taskdata.RegisterPushNotificationQueueTaskData
 import io.customer.sdk.queue.taskdata.TrackEventQueueTaskData
 import io.customer.sdk.queue.type.QueueRunTaskResult
@@ -27,6 +28,7 @@ internal class QueueRunnerImpl(
     override suspend fun runTask(task: QueueTask): QueueRunTaskResult {
         val taskResult = when (valueOfOrNull<QueueTaskType>(task.type)) {
             QueueTaskType.IdentifyProfile -> identifyProfile(task)
+            QueueTaskType.MergeProfiles -> mergeProfiles(task)
             QueueTaskType.TrackEvent -> trackEvent(task)
             QueueTaskType.RegisterDeviceToken -> registerDeviceToken(task)
             QueueTaskType.DeletePushToken -> deleteDeviceToken(task)
@@ -49,6 +51,15 @@ internal class QueueRunnerImpl(
             jsonAdapter.fromJsonOrNull(task.data) ?: return null
 
         return cioHttpClient.identifyProfile(taskData.identifier, taskData.attributes)
+    }
+
+    private suspend fun mergeProfiles(
+        task: QueueTask
+    ): QueueRunTaskResult? {
+        val taskData: MergeProfileQueueTaskData =
+            jsonAdapter.fromJsonOrNull(task.data) ?: return null
+
+        return cioHttpClient.mergeProfile(taskData.primaryIdentifier, taskData.secondaryIdentifier)
     }
 
     private suspend fun trackEvent(task: QueueTask): QueueRunTaskResult? {

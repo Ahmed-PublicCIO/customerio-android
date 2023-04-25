@@ -12,6 +12,7 @@ import io.customer.sdk.data.request.Metric
 import io.customer.sdk.data.request.MetricEvent
 import io.customer.sdk.queue.taskdata.DeletePushNotificationQueueTaskData
 import io.customer.sdk.queue.taskdata.IdentifyProfileQueueTaskData
+import io.customer.sdk.queue.taskdata.MergeProfileQueueTaskData
 import io.customer.sdk.queue.taskdata.RegisterPushNotificationQueueTaskData
 import io.customer.sdk.queue.taskdata.TrackEventQueueTaskData
 import io.customer.sdk.queue.type.QueueModifyResult
@@ -32,6 +33,11 @@ interface Queue {
         newIdentifier: String,
         oldIdentifier: String?,
         attributes: CustomAttributes
+    ): QueueModifyResult
+
+    fun queueMergeProfiles(
+        primary: String,
+        secondary: String
     ): QueueModifyResult
 
     fun queueTrack(
@@ -277,6 +283,18 @@ internal class QueueImpl internal constructor(
             IdentifyProfileQueueTaskData(newIdentifier, attributes),
             groupStart = queueGroupStart,
             blockingGroups = blockingGroups
+        )
+    }
+
+    override fun queueMergeProfiles(
+        primary: String,
+        secondary: String
+    ): QueueModifyResult {
+        return addTask(
+            QueueTaskType.MergeProfiles,
+            MergeProfileQueueTaskData(primary, secondary),
+            groupStart = null,
+            blockingGroups = listOf(QueueTaskGroup.IdentifyProfile(primary))
         )
     }
 
