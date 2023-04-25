@@ -1,5 +1,6 @@
 package io.customer.sdk.repository
 
+import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.data.model.CustomAttributes
 import io.customer.sdk.hooks.HooksManager
 import io.customer.sdk.hooks.ModuleHook
@@ -15,6 +16,7 @@ interface ProfileRepository {
 }
 
 internal class ProfileRepositoryImpl(
+    private val config: CustomerIOConfig,
     private val deviceRepository: DeviceRepository,
     private val sitePreferenceRepository: SitePreferenceRepository,
     private val backgroundQueue: Queue,
@@ -23,7 +25,18 @@ internal class ProfileRepositoryImpl(
 ) : ProfileRepository {
 
     override fun setAnonymousId(anonymousId: String?) {
-        anonymousId?.let { sitePreferenceRepository.saveAnonymousId(it) }
+        anonymousId?.let {
+            if (config.shouldAllowAnonymousMessaging) {
+                logger.info("setting anonymousId $it for profile")
+                // identify profile
+                identify(it, mapOf("anonymous_profile" to true))
+                // store anonymous profile id
+                sitePreferenceRepository.saveAnonymousProfileId(it)
+            } else {
+                logger.info("setting anonymousId $it, but anonymous messaging is disabled")
+                sitePreferenceRepository.saveAnonymousId(it)
+            }
+        }
     }
 
     override fun identify(identifier: String, attributes: CustomAttributes) {
@@ -34,9 +47,12 @@ internal class ProfileRepositoryImpl(
 
         val currentlyIdentifiedProfileIdentifier = sitePreferenceRepository.getIdentifier()
 
+        val currentlyAnonymousProfileId = sitePreferenceRepository.getAnonymousProfileId()
+
         // The SDK calls identify() with the already identified profile for changing profile attributes.
         val isChangingIdentifiedProfile =
             currentlyIdentifiedProfileIdentifier != null && currentlyIdentifiedProfileIdentifier != identifier
+
         val isFirstTimeIdentifying = currentlyIdentifiedProfileIdentifier == null
 
         currentlyIdentifiedProfileIdentifier?.let { currentlyIdentifiedProfileIdentifier ->
@@ -71,6 +87,19 @@ internal class ProfileRepositoryImpl(
             return
         }
 
+        // merge profile
+        if (currentlyAnonymousProfileId != null && isChangingIdentifiedProfile) {
+            logger.debug("merging anonymous profile $currentlyAnonymousProfileId with identified profile $identifier")
+
+            val queueStatus =
+                backgroundQueue.queueMergeProfiles(identifier, currentlyAnonymousProfileId)
+
+            if (queueStatus.success) {
+                logger.debug("removing anonymous profile id from device storage")
+                sitePreferenceRepository.removeAnonymousProfileId()
+            }
+        }
+
         logger.debug("storing identifier on device storage $identifier")
         sitePreferenceRepository.saveIdentifier(identifier)
 
@@ -101,7 +130,7 @@ internal class ProfileRepositoryImpl(
             return
         }
 
-        identify(currentlyIdentifiedProfileId, attributes)
+        identify(currentlyIdentifiedProfileId, attributes = attributes)
     }
 
     override fun clearIdentify() {
@@ -117,7 +146,7 @@ internal class ProfileRepositoryImpl(
         // notify hooks about identifier being cleared
         hooksManager.onHookUpdate(
             ModuleHook.BeforeProfileStoppedBeingIdentified(
-                currentlyIdentifiedProfileId
+                identifier = currentlyIdentifiedProfileId
             )
         )
 
