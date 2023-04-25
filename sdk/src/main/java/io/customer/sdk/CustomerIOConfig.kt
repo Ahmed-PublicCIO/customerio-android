@@ -30,6 +30,12 @@ data class CustomerIOConfig(
      * We do not recommend modifying this value because it risks losing data or taking up too much space on the user's device.
      */
     val backgroundQueueTaskExpiredSeconds: Double,
+
+    /**
+     * Should the CIO be able to send messages (push/in-app) to anonymous profiles (profiles that have not been identified yet)?
+     * Note: These profiles will be counted in billing.
+     */
+    val shouldAllowAnonymousMessaging: Boolean,
     val logLevel: CioLogLevel,
     var trackingApiUrl: String?,
     val configurations: Map<String, CustomerIOModuleConfig>

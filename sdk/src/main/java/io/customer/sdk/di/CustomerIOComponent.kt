@@ -127,6 +127,7 @@ class CustomerIOComponent(
 
     val profileRepository: ProfileRepository
         get() = override() ?: ProfileRepositoryImpl(
+            config = sdkConfig,
             deviceRepository = deviceRepository,
             sitePreferenceRepository = sitePreferenceRepository,
             backgroundQueue = queue,

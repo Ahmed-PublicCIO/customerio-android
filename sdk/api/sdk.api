@@ -42,6 +42,7 @@ public final class io/customer/sdk/CustomerIO$Builder {
 	public final fun setOverrideDiGraph (Lio/customer/sdk/di/CustomerIOComponent;)V
 	public final fun setRegion (Lio/customer/sdk/data/model/Region;)Lio/customer/sdk/CustomerIO$Builder;
 	public final fun setRequestTimeout (J)Lio/customer/sdk/CustomerIO$Builder;
+	public final fun setShouldAllowAnonymousMessaging (Z)Lio/customer/sdk/CustomerIO$Builder;
 	public final fun setTrackingApiURL (Ljava/lang/String;)Lio/customer/sdk/CustomerIO$Builder;
 }
 
@@ -62,12 +63,13 @@ public final class io/customer/sdk/CustomerIOActivityLifecycleCallbacks : androi
 
 public final class io/customer/sdk/CustomerIOConfig {
 	public static final field Companion Lio/customer/sdk/CustomerIOConfig$Companion;
-	public fun <init> (Lio/customer/sdk/data/store/Client;Ljava/lang/String;Ljava/lang/String;Lio/customer/sdk/data/model/Region;JZZIDDLio/customer/sdk/util/CioLogLevel;Ljava/lang/String;Ljava/util/Map;)V
+	public fun <init> (Lio/customer/sdk/data/store/Client;Ljava/lang/String;Ljava/lang/String;Lio/customer/sdk/data/model/Region;JZZIDDZLio/customer/sdk/util/CioLogLevel;Ljava/lang/String;Ljava/util/Map;)V
 	public final fun component1 ()Lio/customer/sdk/data/store/Client;
 	public final fun component10 ()D
-	public final fun component11 ()Lio/customer/sdk/util/CioLogLevel;
-	public final fun component12 ()Ljava/lang/String;
-	public final fun component13 ()Ljava/util/Map;
+	public final fun component11 ()Z
+	public final fun component12 ()Lio/customer/sdk/util/CioLogLevel;
+	public final fun component13 ()Ljava/lang/String;
+	public final fun component14 ()Ljava/util/Map;
 	public final fun component2 ()Ljava/lang/String;
 	public final fun component3 ()Ljava/lang/String;
 	public final fun component4 ()Lio/customer/sdk/data/model/Region;
@@ -76,8 +78,8 @@ public final class io/customer/sdk/CustomerIOConfig {
 	public final fun component7 ()Z
 	public final fun component8 ()I
 	public final fun component9 ()D
-	public final fun copy (Lio/customer/sdk/data/store/Client;Ljava/lang/String;Ljava/lang/String;Lio/customer/sdk/data/model/Region;JZZIDDLio/customer/sdk/util/CioLogLevel;Ljava/lang/String;Ljava/util/Map;)Lio/customer/sdk/CustomerIOConfig;
-	public static synthetic fun copy$default (Lio/customer/sdk/CustomerIOConfig;Lio/customer/sdk/data/store/Client;Ljava/lang/String;Ljava/lang/String;Lio/customer/sdk/data/model/Region;JZZIDDLio/customer/sdk/util/CioLogLevel;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Lio/customer/sdk/CustomerIOConfig;
+	public final fun copy (Lio/customer/sdk/data/store/Client;Ljava/lang/String;Ljava/lang/String;Lio/customer/sdk/data/model/Region;JZZIDDZLio/customer/sdk/util/CioLogLevel;Ljava/lang/String;Ljava/util/Map;)Lio/customer/sdk/CustomerIOConfig;
+	public static synthetic fun copy$default (Lio/customer/sdk/CustomerIOConfig;Lio/customer/sdk/data/store/Client;Ljava/lang/String;Ljava/lang/String;Lio/customer/sdk/data/model/Region;JZZIDDZLio/customer/sdk/util/CioLogLevel;Ljava/lang/String;Ljava/util/Map;ILjava/lang/Object;)Lio/customer/sdk/CustomerIOConfig;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getApiKey ()Ljava/lang/String;
 	public final fun getAutoTrackDeviceAttributes ()Z
@@ -89,6 +91,7 @@ public final class io/customer/sdk/CustomerIOConfig {
 	public final fun getConfigurations ()Ljava/util/Map;
 	public final fun getLogLevel ()Lio/customer/sdk/util/CioLogLevel;
 	public final fun getRegion ()Lio/customer/sdk/data/model/Region;
+	public final fun getShouldAllowAnonymousMessaging ()Z
 	public final fun getSiteId ()Ljava/lang/String;
 	public final fun getTimeout ()J
 	public final fun getTrackingApiUrl ()Ljava/lang/String;
@@ -213,6 +216,26 @@ public final class io/customer/sdk/data/request/DeviceJsonAdapter : com/squareup
 	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lio/customer/sdk/data/request/Device;
 	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
 	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lio/customer/sdk/data/request/Device;)V
+	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/customer/sdk/data/request/MergeIdentifier {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lio/customer/sdk/data/request/MergeIdentifier;
+	public static synthetic fun copy$default (Lio/customer/sdk/data/request/MergeIdentifier;Ljava/lang/String;ILjava/lang/Object;)Lio/customer/sdk/data/request/MergeIdentifier;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/customer/sdk/data/request/MergeIdentifierJsonAdapter : com/squareup/moshi/JsonAdapter {
+	public fun <init> (Lcom/squareup/moshi/Moshi;)V
+	public fun fromJson (Lcom/squareup/moshi/JsonReader;)Lio/customer/sdk/data/request/MergeIdentifier;
+	public synthetic fun fromJson (Lcom/squareup/moshi/JsonReader;)Ljava/lang/Object;
+	public fun toJson (Lcom/squareup/moshi/JsonWriter;Lio/customer/sdk/data/request/MergeIdentifier;)V
 	public synthetic fun toJson (Lcom/squareup/moshi/JsonWriter;Ljava/lang/Object;)V
 	public fun toString ()Ljava/lang/String;
 }
@@ -367,12 +390,15 @@ public final class io/customer/sdk/repository/TrackRepository$DefaultImpls {
 public abstract interface class io/customer/sdk/repository/preference/SitePreferenceRepository {
 	public abstract fun clearAll ()V
 	public abstract fun getAnonymousId ()Ljava/lang/String;
+	public abstract fun getAnonymousProfileId ()Ljava/lang/String;
 	public abstract fun getDeviceToken ()Ljava/lang/String;
 	public abstract fun getHttpRequestsPauseEnds ()Ljava/util/Date;
 	public abstract fun getIdentifier ()Ljava/lang/String;
 	public abstract fun removeAnonymousId ()V
+	public abstract fun removeAnonymousProfileId ()V
 	public abstract fun removeIdentifier ()V
 	public abstract fun saveAnonymousId (Ljava/lang/String;)V
+	public abstract fun saveAnonymousProfileId (Ljava/lang/String;)V
 	public abstract fun saveDeviceToken (Ljava/lang/String;)V
 	public abstract fun saveIdentifier (Ljava/lang/String;)V
 	public abstract fun setHttpRequestsPauseEnds (Ljava/util/Date;)V

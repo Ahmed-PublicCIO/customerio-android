@@ -192,6 +192,7 @@ class CustomerIO internal constructor(
             CustomerIOConfig.Companion.AnalyticsConstants.BACKGROUND_QUEUE_MIN_NUMBER_OF_TASKS
         private var backgroundQueueSecondsDelay: Double =
             CustomerIOConfig.Companion.AnalyticsConstants.BACKGROUND_QUEUE_SECONDS_DELAY
+        private var shouldAllowAnonymousMessaging: Boolean = false
 
         // added a `config` in the secondary constructor so users stick to our advised primary constructor
         // and this is used internally only.
@@ -308,6 +309,11 @@ class CustomerIO internal constructor(
             return this
         }
 
+        fun setShouldAllowAnonymousMessaging(allowAnonymousMessaging: Boolean): Builder {
+            this.shouldAllowAnonymousMessaging = allowAnonymousMessaging
+            return this
+        }
+
         fun <Config : CustomerIOModuleConfig> addCustomerIOModule(module: CustomerIOModule<Config>): Builder {
             modules[module.moduleName] = module
             return this
@@ -333,6 +339,7 @@ class CustomerIO internal constructor(
                 backgroundQueueMinNumberOfTasks = backgroundQueueMinNumberOfTasks,
                 backgroundQueueSecondsDelay = backgroundQueueSecondsDelay,
                 backgroundQueueTaskExpiredSeconds = Seconds.fromDays(3).value,
+                shouldAllowAnonymousMessaging = shouldAllowAnonymousMessaging,
                 logLevel = logLevel,
                 trackingApiUrl = trackingApiUrl,
                 configurations = modules.entries.associate { entry -> entry.key to entry.value.moduleConfig }
