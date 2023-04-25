@@ -6,6 +6,8 @@ import io.customer.sdk.data.request.DeliveryEvent
 import io.customer.sdk.data.request.Device
 import io.customer.sdk.data.request.DeviceRequest
 import io.customer.sdk.data.request.Event
+import io.customer.sdk.data.request.Merge
+import io.customer.sdk.data.request.MergeIdentifier
 import io.customer.sdk.data.request.Metric
 
 /**
@@ -19,6 +21,7 @@ internal interface TrackingHttpClient {
     suspend fun deleteDevice(identifier: String, deviceToken: String): Result<Unit>
     suspend fun trackPushMetrics(metric: Metric): Result<Unit>
     suspend fun trackDeliveryEvents(event: DeliveryEvent): Result<Unit>
+    suspend fun mergeProfile(primary: String, secondary: String): Result<Unit>
 }
 
 internal class RetrofitTrackingHttpClient(
@@ -68,6 +71,17 @@ internal class RetrofitTrackingHttpClient(
     override suspend fun trackDeliveryEvents(event: DeliveryEvent): Result<Unit> {
         return httpRequestRunner.performAndProcessRequest {
             retrofitService.trackDeliveryEvents(event)
+        }
+    }
+
+    override suspend fun mergeProfile(primary: String, secondary: String): Result<Unit> {
+        return httpRequestRunner.performAndProcessRequest {
+            retrofitService.merge(
+                Merge(
+                    primary = MergeIdentifier(primary),
+                    secondary = MergeIdentifier(secondary)
+                )
+            )
         }
     }
 }

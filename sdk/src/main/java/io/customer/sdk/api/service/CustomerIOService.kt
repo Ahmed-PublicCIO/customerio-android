@@ -4,6 +4,7 @@ import io.customer.sdk.data.model.CustomAttributes
 import io.customer.sdk.data.request.DeliveryEvent
 import io.customer.sdk.data.request.DeviceRequest
 import io.customer.sdk.data.request.Event
+import io.customer.sdk.data.request.Merge
 import io.customer.sdk.data.request.Metric
 import retrofit2.Response
 import retrofit2.http.*
@@ -15,6 +16,12 @@ internal interface CustomerIOService {
     suspend fun identifyCustomer(
         @Path("identifier") identifier: String,
         @Body body: CustomAttributes
+    ): Response<Unit>
+
+    @JvmSuppressWildcards
+    @POST("api/v1/merge_customers")
+    suspend fun merge(
+        @Body body: Merge
     ): Response<Unit>
 
     @JvmSuppressWildcards
