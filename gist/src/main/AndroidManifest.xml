@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="build.gist">
+
+    <application>
+        <activity
+            android:name="build.gist.presentation.GistModalActivity"
+            android:theme="@style/GistActivityTheme" />
+    </application>
+
+</manifest>

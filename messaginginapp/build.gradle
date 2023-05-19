@@ -48,11 +48,11 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 dependencies {
     api project(":base")
     api project(":sdk")
+    api project(":gist")
 
     implementation Dependencies.coroutinesCore
     implementation Dependencies.coroutinesAndroid
     implementation Dependencies.retrofit
-    api Dependencies.gist
     implementation Dependencies.retrofitMoshiConverter
     implementation Dependencies.okhttpLoggingInterceptor
     testImplementation Dependencies.androidxTestJunit
