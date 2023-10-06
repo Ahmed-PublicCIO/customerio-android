@@ -27,8 +27,6 @@ internal constructor(
         overrideDiGraph = null
     )
 
-    private val customerIO: CustomerIOInstance
-        get() = overrideCustomerIO ?: CustomerIO.instance()
     private val diGraph: CustomerIOComponent
         get() = overrideDiGraph ?: CustomerIO.instance().diGraph
     private val fcmTokenProvider by lazy { diGraph.fcmTokenProvider }
@@ -56,7 +54,7 @@ internal constructor(
      */
     private fun getCurrentFcmToken() {
         fcmTokenProvider.getCurrentToken { token ->
-            token?.let { customerIO.registerDeviceToken(token) }
+//            token?.let { customerIO.registerDeviceToken(token) }
         }
     }
 

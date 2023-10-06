@@ -1,5 +1,5 @@
-include ':sdk'
 rootProject.name = "Customer.io SDK"
+include ':sdk'
 include ':base'
 include ':messagingpush'
 include ':common-test'
@@ -7,3 +7,4 @@ include ':messaginginapp'
 include ':samples:kotlin_compose'
 include ':datapipeline'
 include ':samples:java_layout'
+include ':tracking'

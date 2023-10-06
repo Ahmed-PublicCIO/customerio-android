@@ -1,7 +1,11 @@
 package io.customer.datapipeline
+
 import android.app.Application
 import com.segment.analytics.kotlin.android.Analytics
-import com.segment.analytics.kotlin.core.*
+import com.segment.analytics.kotlin.core.Analytics
+import com.segment.analytics.kotlin.core.Properties
+import com.segment.analytics.kotlin.core.Traits
+import com.segment.analytics.kotlin.core.emptyJsonObject
 import com.segment.analytics.kotlin.core.utilities.JsonAnySerializer
 import io.customer.sdk.CustomerIO
 import io.customer.sdk.di.CustomerIOComponent
@@ -32,13 +36,11 @@ class ModuleDataPipeline(
     private var analytics: Analytics? = null
 
     override fun initialize() {
-        analytics =
-            Analytics(writeKey = moduleConfig.apiKey, context = diGraph.context as Application) {
-                this.errorHandler = {
-                    it.printStackTrace()
-                    it.localizedMessage?.let { it1 -> diGraph.logger.error(it1) }
-                }
-            }
+        analytics = Analytics(
+            writeKey = moduleConfig.writeKey,
+            context = diGraph.context as Application,
+            configs = moduleConfig.configuration
+        )
     }
 
     companion object {

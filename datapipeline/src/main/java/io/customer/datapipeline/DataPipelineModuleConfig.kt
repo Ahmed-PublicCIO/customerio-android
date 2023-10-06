@@ -1,15 +1,23 @@
 package io.customer.datapipeline
 
+import com.segment.analytics.kotlin.core.Configuration
 import io.customer.sdk.module.CustomerIOModuleConfig
 
-class DataPipelineModuleConfig private constructor(
-    val apiKey: String
+class DataPipelineModuleConfig(
+    val writeKey: String,
+    val configuration: Configuration.() -> Unit = {}
 ) : CustomerIOModuleConfig {
 
-    class Builder(val apiKey: String) : CustomerIOModuleConfig.Builder<DataPipelineModuleConfig> {
+    class Builder(
+        private val writeKey: String,
+        val configuration: Configuration.() -> Unit = {}
+    ) :
+        CustomerIOModuleConfig.Builder<DataPipelineModuleConfig> {
+
         override fun build(): DataPipelineModuleConfig {
             return DataPipelineModuleConfig(
-                apiKey = apiKey
+                writeKey = writeKey,
+                configuration = configuration
             )
         }
     }

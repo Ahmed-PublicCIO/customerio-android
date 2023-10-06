@@ -11,6 +11,7 @@ data class CustomerIOConfig(
     val apiKey: String,
     val region: Region,
     val timeout: Long,
+    val writeKey: String,
     val autoTrackScreenViews: Boolean,
     val autoTrackDeviceAttributes: Boolean,
     /**

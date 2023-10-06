@@ -5,8 +5,7 @@ import dagger.hilt.android.HiltAndroidApp
 import io.customer.android.sample.kotlin_compose.data.models.setValuesFromBuilder
 import io.customer.android.sample.kotlin_compose.data.repositories.PreferenceRepository
 import io.customer.android.sample.kotlin_compose.data.sdk.InAppMessageEventListener
-import io.customer.datapipeline.DataPipelineModuleConfig
-import io.customer.datapipeline.ModuleDataPipeline
+import io.customer.datapipeline.build
 import io.customer.messaginginapp.MessagingInAppModuleConfig
 import io.customer.messaginginapp.ModuleMessagingInApp
 import io.customer.messagingpush.ModuleMessagingPushFCM
@@ -41,13 +40,17 @@ class MainApplication : Application() {
                 )
             )
             addCustomerIOModule(ModuleMessagingPushFCM())
-            addCustomerIOModule(
-                ModuleDataPipeline(
-                    DataPipelineModuleConfig.Builder("API-KEY").build()
-                )
-            )
+//            addCustomerIOModule(
+//                ModuleDataPipeline(
+//                    DataPipelineModuleConfig.Builder().build()
+//                )
+//            )
 
             build()
+        }
+
+        CustomerIO.Builder(writeKey = "", appContext = this).build {
+            this.flushInterval = 1
         }
     }
 }

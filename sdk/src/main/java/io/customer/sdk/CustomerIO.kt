@@ -30,54 +30,54 @@ import kotlinx.coroutines.launch
  * of the SDK and/or do not have the SDK run it's real implementation during automated tests.
  */
 interface CustomerIOInstance {
-    val siteId: String
-    val sdkVersion: String
-    // For security reasons, do not expose the SDK config as anyone can get the API key from the SDK including 3rd parties.
-
-    var profileAttributes: CustomAttributes
-    var deviceAttributes: CustomAttributes
-
-    val registeredDeviceToken: String?
-
-    fun identify(identifier: String)
-
-    fun identify(
-        identifier: String,
-        attributes: Map<String, Any>
-    )
-
-    fun track(name: String)
-
-    fun track(
-        name: String,
-        attributes: Map<String, Any>
-    )
-
-    fun screen(name: String)
-
-    fun screen(
-        name: String,
-        attributes: Map<String, Any>
-    )
-
-    fun screen(activity: Activity)
-
-    fun screen(
-        activity: Activity,
-        attributes: Map<String, Any>
-    )
-
-    fun clearIdentify()
-
-    fun registerDeviceToken(deviceToken: String)
-
-    fun deleteDeviceToken()
-
-    fun trackMetric(
-        deliveryID: String,
-        event: MetricEvent,
-        deviceToken: String
-    )
+//    val siteId: String
+//    val sdkVersion: String
+//    // For security reasons, do not expose the SDK config as anyone can get the API key from the SDK including 3rd parties.
+//
+//    var profileAttributes: CustomAttributes
+//    var deviceAttributes: CustomAttributes
+//
+//    val registeredDeviceToken: String?
+//
+//    fun identify(identifier: String)
+//
+//    fun identify(
+//        identifier: String,
+//        attributes: Map<String, Any>
+//    )
+//
+//    fun track(name: String)
+//
+//    fun track(
+//        name: String,
+//        attributes: Map<String, Any>
+//    )
+//
+//    fun screen(name: String)
+//
+//    fun screen(
+//        name: String,
+//        attributes: Map<String, Any>
+//    )
+//
+//    fun screen(activity: Activity)
+//
+//    fun screen(
+//        activity: Activity,
+//        attributes: Map<String, Any>
+//    )
+//
+//    fun clearIdentify()
+//
+//    fun registerDeviceToken(deviceToken: String)
+//
+//    fun deleteDeviceToken()
+//
+//    fun trackMetric(
+//        deliveryID: String,
+//        event: MetricEvent,
+//        deviceToken: String
+//    )
 }
 
 /**
@@ -168,7 +168,7 @@ class CustomerIO internal constructor(
                 for (module in modules) {
                     addCustomerIOModule(module)
                 }
-            }.build()
+            }.trackingBuild {}
         }
 
         @JvmStatic
@@ -179,10 +179,8 @@ class CustomerIO internal constructor(
     }
 
     class Builder @JvmOverloads constructor(
-        private val siteId: String,
-        private val apiKey: String,
-        private var region: Region = Region.US,
-        private val appContext: Application
+        val writeKey: String,
+        val appContext: Application
     ) {
         private val sharedInstance = CustomerIOShared.instance()
         private var client: Client = Client.Android(Version.version)
@@ -203,6 +201,8 @@ class CustomerIO internal constructor(
         private var backgroundQueueSecondsDelay: Double =
             CustomerIOConfig.Companion.AnalyticsConstants.BACKGROUND_QUEUE_SECONDS_DELAY
 
+        private var region: Region = Region.US
+
         // added a `config` in the secondary constructor so users stick to our advised primary constructor
         // and this is used internally only.
         constructor(
@@ -213,6 +213,19 @@ class CustomerIO internal constructor(
             config: Map<String, Any?>
         ) : this(siteId, apiKey, region, appContext) {
             setupConfig(config)
+        }
+
+        constructor(
+            siteId: String,
+            apiKey: String,
+            region: Region = Region.US,
+            appContext: Application
+        ) : this(writeKey = "$siteId:$apiKey", appContext = appContext) {
+            require(apiKey.isNotBlank()) { "apiKey is not defined in" + this::class.java.simpleName }
+
+            require(siteId.isNotBlank()) { "siteId is not defined in" + this::class.java.simpleName }
+
+            this.region = region
         }
 
         private fun setupConfig(config: Map<String, Any?>?): Builder {
@@ -323,21 +336,17 @@ class CustomerIO internal constructor(
             return this
         }
 
-        fun build(): CustomerIO {
-            if (apiKey.isEmpty()) {
-                throw IllegalStateException("apiKey is not defined in " + this::class.java.simpleName)
-            }
-
-            if (siteId.isEmpty()) {
-                throw IllegalStateException("siteId is not defined in " + this::class.java.simpleName)
-            }
+        @InternalCustomerIOApi
+        fun trackingBuild(block: (config: CustomerIOConfig) -> Unit): CustomerIO {
+            require(writeKey.isNotBlank()) { "writeKey is not defined in" + this::class.java.simpleName }
 
             val config = CustomerIOConfig(
                 client = client,
-                siteId = siteId,
-                apiKey = apiKey,
-                region = region,
+                writeKey = writeKey,
                 timeout = timeout,
+                siteId = "siteId",
+                apiKey = "apiKey",
+                region = region,
                 autoTrackScreenViews = shouldAutoRecordScreenViews,
                 autoTrackDeviceAttributes = autoTrackDeviceAttributes,
                 backgroundQueueMinNumberOfTasks = backgroundQueueMinNumberOfTasks,
@@ -347,6 +356,8 @@ class CustomerIO internal constructor(
                 trackingApiUrl = trackingApiUrl,
                 modules = modules.entries.associate { entry -> entry.key to entry.value }
             )
+
+            block(config)
 
             sharedInstance.attachSDKConfig(sdkConfig = config, context = appContext)
             val diGraph = overrideDiGraph ?: CustomerIOComponent(
@@ -364,6 +375,7 @@ class CustomerIO internal constructor(
             instance = client
 
             appContext.registerActivityLifecycleCallbacks(diGraph.activityLifecycleCallbacks)
+
             modules.forEach {
                 logger.debug("initializing SDK module ${it.value.moduleName}...")
                 it.value.initialize()
@@ -384,10 +396,7 @@ class CustomerIO internal constructor(
     private val profileRepository: ProfileRepository
         get() = diGraph.profileRepository
 
-    override val siteId: String
-        get() = diGraph.sdkConfig.siteId
-
-    override val sdkVersion: String
+    val sdkVersion: String
         get() = Version.version
 
     private val cleanupRepository: CleanupRepository
@@ -410,7 +419,7 @@ class CustomerIO internal constructor(
      * [Learn more](https://customer.io/docs/api/#operation/identify)
      * @return Action<Unit> which can be accessed via `execute` or `enqueue`
      */
-    override fun identify(identifier: String) = this.identify(identifier, emptyMap())
+    fun identify(identifier: String) = this.identify(identifier, emptyMap())
 
     /**
      * Identify a customer (aka: Add or update a profile).
@@ -423,7 +432,7 @@ class CustomerIO internal constructor(
      * @param attributes Map of <String, IdentityAttributeValue> to be added
      * @return Action<Unit> which can be accessed via `execute` or `enqueue`
      */
-    override fun identify(
+    fun identify(
         identifier: String,
         attributes: CustomAttributes
     ) = profileRepository.identify(identifier, attributes)
@@ -433,7 +442,7 @@ class CustomerIO internal constructor(
      * [Learn more](https://customer.io/docs/events/) about events in Customer.io
      * @param name Name of the event you want to track.
      */
-    override fun track(name: String) = this.track(name, emptyMap())
+    fun track(name: String) = this.track(name, emptyMap())
 
     /**
      * Track an event
@@ -442,7 +451,7 @@ class CustomerIO internal constructor(
      * @param attributes Optional event body in Map format used as JSON object
      * @return Action<Unit> which can be accessed via `execute` or `enqueue`
      */
-    override fun track(
+    fun track(
         name: String,
         attributes: CustomAttributes
     ) = trackRepository.track(name, attributes)
@@ -452,7 +461,7 @@ class CustomerIO internal constructor(
      * @param name Name of the screen you want to track.
      * @return Action<Unit> which can be accessed via `execute` or `enqueue`
      */
-    override fun screen(name: String) = this.screen(name, emptyMap())
+    fun screen(name: String) = this.screen(name, emptyMap())
 
     /**
      * Track screen
@@ -460,7 +469,7 @@ class CustomerIO internal constructor(
      * @param attributes Optional event body in Map format used as JSON object
      * @return Action<Unit> which can be accessed via `execute` or `enqueue`
      */
-    override fun screen(
+    fun screen(
         name: String,
         attributes: CustomAttributes
     ) = trackRepository.screen(name, attributes)
@@ -470,7 +479,7 @@ class CustomerIO internal constructor(
      * @param activity Instance of the activity you want to track.
      * @return Action<Unit> which can be accessed via `execute` or `enqueue`
      */
-    override fun screen(activity: Activity) = this.screen(activity, emptyMap())
+    fun screen(activity: Activity) = this.screen(activity, emptyMap())
 
     /**
      * Track activity screen, `label` added for this activity in `manifest` will be utilized for tracking
@@ -478,7 +487,7 @@ class CustomerIO internal constructor(
      * @param attributes Optional event body in Map format used as JSON object
      * @return Action<Unit> which can be accessed via `execute` or `enqueue`
      */
-    override fun screen(
+    fun screen(
         activity: Activity,
         attributes: CustomAttributes
     ) = recordScreenViews(activity, attributes)
@@ -490,7 +499,7 @@ class CustomerIO internal constructor(
      * call `identify()` again to identify the new customer profile over the existing.
      * If no profile has been identified yet, this function will ignore your request.
      */
-    override fun clearIdentify() {
+    fun clearIdentify() {
         profileRepository.clearIdentify()
     }
 
@@ -498,18 +507,18 @@ class CustomerIO internal constructor(
      * Register a new device token with Customer.io, associated with the current active customer. If there
      * is no active customer, this will fail to register the device
      */
-    override fun registerDeviceToken(deviceToken: String) =
+    fun registerDeviceToken(deviceToken: String) =
         deviceRepository.registerDeviceToken(deviceToken, deviceAttributes)
 
     /**
      * Delete the currently registered device token
      */
-    override fun deleteDeviceToken() = deviceRepository.deleteDeviceToken()
+    fun deleteDeviceToken() = deviceRepository.deleteDeviceToken()
 
     /**
      * Track a push metric
      */
-    override fun trackMetric(
+    fun trackMetric(
         deliveryID: String,
         event: MetricEvent,
         deviceToken: String
@@ -524,7 +533,7 @@ class CustomerIO internal constructor(
      *
      * Note: If there is not a profile identified, this request will be ignored.
      */
-    override var profileAttributes: CustomAttributes = emptyMap()
+    var profileAttributes: CustomAttributes = emptyMap()
         set(value) {
             profileRepository.addCustomProfileAttributes(value)
         }
@@ -533,14 +542,14 @@ class CustomerIO internal constructor(
      * Use to provide additional and custom device attributes
      * apart from the ones the SDK is programmed to send to customer workspace.
      */
-    override var deviceAttributes: CustomAttributes = emptyMap()
+    var deviceAttributes: CustomAttributes = emptyMap()
         set(value) {
             field = value
 
             deviceRepository.addCustomDeviceAttributes(value)
         }
 
-    override val registeredDeviceToken: String?
+    val registeredDeviceToken: String?
         get() = deviceRepository.getDeviceToken()
 
     private fun recordScreenViews(activity: Activity, attributes: CustomAttributes) {
