@@ -5,7 +5,3 @@ public final class io/customer/tracking/BuildConfig {
 	public fun <init> ()V
 }
 
-public final class io/customer/tracking/di/CustomerIOTrackingKt {
-	public static final fun build (Lio/customer/sdk/CustomerIO$Builder;)Lio/customer/sdk/CustomerIO;
-}
-

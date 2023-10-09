@@ -1,7 +1,7 @@
 package io.customer.sdk.extensions
 
 import io.customer.base.internal.InternalCustomerIOApi
-import io.customer.sdk.CustomerIOShared
+import io.customer.sdk.CustomerIO
 
 @InternalCustomerIOApi
 @Throws(IllegalArgumentException::class)
@@ -20,7 +20,7 @@ inline fun <reified T> Map<String, Any?>.getPropertyUnsafe(key: String): T {
 inline fun <reified T> Map<String, Any?>.getProperty(key: String): T? = try {
     getPropertyUnsafe(key)
 } catch (ex: IllegalArgumentException) {
-    CustomerIOShared.instance().diStaticGraph.logger.error(
+    CustomerIO.instance().diGraph.logger.error(
         ex.message ?: "getProperty($key) -> IllegalArgumentException"
     )
     null
@@ -33,7 +33,7 @@ fun Map<String, Any?>.getString(key: String): String = try {
         "Invalid value provided for $key, must not be blank"
     )
 } catch (ex: IllegalArgumentException) {
-    CustomerIOShared.instance().diStaticGraph.logger.error(
+    CustomerIO.instance().diGraph.logger.error(
         ex.message ?: "getString($key) -> IllegalArgumentException"
     )
     throw ex

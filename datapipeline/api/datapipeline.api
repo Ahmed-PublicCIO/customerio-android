@@ -5,11 +5,6 @@ public final class io/customer/datapipeline/BuildConfig {
 	public fun <init> ()V
 }
 
-public final class io/customer/datapipeline/CustomerIODataPipelineKt {
-	public static final fun build (Lio/customer/sdk/CustomerIO$Builder;Lkotlin/jvm/functions/Function1;)Lio/customer/sdk/CustomerIO$Builder;
-	public static synthetic fun build$default (Lio/customer/sdk/CustomerIO$Builder;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lio/customer/sdk/CustomerIO$Builder;
-}
-
 public final class io/customer/datapipeline/DataPipelineModuleConfig : io/customer/sdk/module/CustomerIOModuleConfig {
 	public fun <init> (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
 	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V

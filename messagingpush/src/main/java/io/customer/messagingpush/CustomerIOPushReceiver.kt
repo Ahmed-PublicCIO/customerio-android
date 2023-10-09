@@ -11,7 +11,6 @@ import io.customer.messagingpush.di.deepLinkUtil
 import io.customer.messagingpush.di.moduleConfig
 import io.customer.messagingpush.util.DeepLinkUtil
 import io.customer.sdk.CustomerIO
-import io.customer.sdk.CustomerIOShared
 import io.customer.sdk.data.request.MetricEvent
 import io.customer.sdk.di.CustomerIOComponent
 import io.customer.sdk.util.Logger

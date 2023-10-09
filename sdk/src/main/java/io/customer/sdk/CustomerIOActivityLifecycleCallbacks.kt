@@ -84,7 +84,7 @@ class CustomerIOActivityLifecycleCallbacks internal constructor(
         sendEventToCallbacks(Lifecycle.Event.ON_START, activity)
 
         if (config.autoTrackScreenViews) {
-            customerIO.screen(activity)
+//            customerIO.screen(activity)
         }
     }
 
