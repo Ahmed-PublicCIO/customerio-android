@@ -13,7 +13,6 @@ import io.customer.android.sample.kotlin_compose.util.PreferencesKeys.SITE_ID
 import io.customer.android.sample.kotlin_compose.util.PreferencesKeys.TRACK_API_URL_KEY
 import io.customer.android.sample.kotlin_compose.util.PreferencesKeys.TRACK_DEVICE_ATTRIBUTES
 import io.customer.android.sample.kotlin_compose.util.PreferencesKeys.TRACK_SCREEN
-import io.customer.sdk.CustomerIOConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

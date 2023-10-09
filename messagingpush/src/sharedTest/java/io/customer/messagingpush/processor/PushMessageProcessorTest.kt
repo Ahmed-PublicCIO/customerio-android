@@ -8,7 +8,6 @@ import io.customer.messagingpush.MessagingPushModuleConfig
 import io.customer.messagingpush.ModuleMessagingPushFCM
 import io.customer.messagingpush.di.moduleConfig
 import io.customer.messagingpush.util.PushTrackingUtil
-import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.CustomerIOInstance
 import io.customer.sdk.data.request.MetricEvent
 import io.customer.sdk.extensions.random

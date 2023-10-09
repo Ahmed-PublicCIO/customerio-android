@@ -11,7 +11,6 @@ import io.customer.sdk.queue.taskdata.TrackEventQueueTaskData
 import io.customer.sdk.queue.type.QueueRunTaskResult
 import io.customer.sdk.queue.type.QueueTask
 import io.customer.sdk.queue.type.QueueTaskType
-import io.customer.sdk.util.JsonAdapter
 import io.customer.sdk.util.Logger
 import java.io.IOException
 

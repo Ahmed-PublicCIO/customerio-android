@@ -6,7 +6,6 @@ import io.customer.base.internal.InternalCustomerIOApi
 import io.customer.messaginginapp.di.gistProvider
 import io.customer.messaginginapp.hook.ModuleInAppHookProvider
 import io.customer.sdk.CustomerIO
-import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.data.request.MetricEvent
 import io.customer.sdk.di.CustomerIOComponent
 import io.customer.sdk.hooks.HookModule

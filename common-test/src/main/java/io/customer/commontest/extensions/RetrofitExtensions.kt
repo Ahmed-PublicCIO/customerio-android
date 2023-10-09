@@ -1,6 +1,5 @@
 package io.customer.commontest.extensions
 
-import io.customer.sdk.util.JsonAdapter
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody

@@ -1,7 +1,5 @@
 package io.customer.sdk.data.store
 
-import io.customer.sdk.CustomerIOConfig
-
 interface DeviceStore : BuildStore, ApplicationStore {
 
     // SDK version

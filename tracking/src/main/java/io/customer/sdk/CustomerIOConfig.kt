@@ -2,7 +2,6 @@ package io.customer.sdk
 
 import io.customer.sdk.data.model.Region
 import io.customer.sdk.data.store.Client
-import io.customer.sdk.module.CustomerIOModule
 import io.customer.sdk.util.CioLogLevel
 
 data class CustomerIOConfig(
@@ -11,7 +10,6 @@ data class CustomerIOConfig(
     val apiKey: String,
     val region: Region,
     val timeout: Long,
-    val writeKey: String,
     val autoTrackScreenViews: Boolean,
     val autoTrackDeviceAttributes: Boolean,
     /**
@@ -32,8 +30,7 @@ data class CustomerIOConfig(
      */
     val backgroundQueueTaskExpiredSeconds: Double,
     val logLevel: CioLogLevel,
-    var trackingApiUrl: String?,
-    val modules: Map<String, CustomerIOModule<*>>
+    var trackingApiUrl: String?
 ) {
     internal val trackingApiHostname: String
         get() {

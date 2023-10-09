@@ -9,7 +9,7 @@ import io.customer.base.internal.InternalCustomerIOApi
 import io.customer.sdk.lifecycle.LifecycleCallback
 
 class CustomerIOActivityLifecycleCallbacks internal constructor(
-    private val config: CustomerIOConfig
+    private val config: io.customer.sdk.CustomerIOConfig
 ) : ActivityLifecycleCallbacks {
     private val customerIO: CustomerIO by lazy { CustomerIO.instance() }
     private val eventCallbacks = mutableMapOf<Lifecycle.Event, MutableList<LifecycleCallback>>()

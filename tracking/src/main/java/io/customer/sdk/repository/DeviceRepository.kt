@@ -1,6 +1,5 @@
 package io.customer.sdk.repository
 
-import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.data.model.CustomAttributes
 import io.customer.sdk.data.request.Device
 import io.customer.sdk.data.store.DeviceStore

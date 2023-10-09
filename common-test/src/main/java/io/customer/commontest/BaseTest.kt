@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import io.customer.commontest.util.DispatchersProviderStub
-import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.data.model.Region
 import io.customer.sdk.data.store.Client
 import io.customer.sdk.data.store.DeviceStore

@@ -1,6 +1,5 @@
 package io.customer.commontest
 
-import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.data.store.ApplicationStore
 import io.customer.sdk.data.store.BuildStore
 import io.customer.sdk.data.store.DeviceStore

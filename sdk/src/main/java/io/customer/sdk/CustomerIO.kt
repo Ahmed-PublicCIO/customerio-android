@@ -7,7 +7,6 @@ import io.customer.sdk.di.CustomerIOComponent
 import io.customer.sdk.di.CustomerIOStaticComponent
 import io.customer.sdk.module.CustomerIOModule
 import io.customer.sdk.module.CustomerIOModuleConfig
-import io.customer.sdk.util.CioLogLevel
 
 /**
  * Allows mocking of [CustomerIO] for your automated tests in your project. Mock [CustomerIO] to assert your code is calling functions
@@ -50,15 +49,8 @@ class CustomerIO internal constructor(
             mutableMapOf()
         private var implementation: CustomerIOImplementation? = null
 
-        private var logLevel: CioLogLevel =
-            CustomerIOConfig.Companion.SDKConstants.LOG_LEVEL_DEFAULT
         public var overrideDiGraph: CustomerIOComponent? =
             null // public for automated tests in non-tracking modules to override the di graph.
-
-        fun setLogLevel(level: CioLogLevel): Builder {
-            this.logLevel = level
-            return this
-        }
 
         fun setImplementation(impl: CustomerIOImplementation): Builder {
             this.implementation = impl

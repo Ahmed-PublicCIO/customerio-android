@@ -1,7 +1,6 @@
 package io.customer.sdk.repository.preference
 
 import android.content.Context
-import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.extensions.getDate
 import io.customer.sdk.extensions.putDate
 import java.util.*

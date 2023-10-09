@@ -6,7 +6,6 @@ import io.customer.messaginginapp.di.inAppMessaging
 import io.customer.messaginginapp.provider.InAppMessagesProvider
 import io.customer.messaginginapp.type.InAppEventListener
 import io.customer.sdk.CustomerIO
-import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.data.model.Region
 import io.customer.sdk.extensions.random
 import io.customer.sdk.hooks.HookModule

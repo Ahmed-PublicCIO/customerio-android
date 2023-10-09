@@ -1,15 +1,14 @@
 package io.customer.sdk.di
 
 import android.content.Context
-import io.customer.sdk.api.*
-import io.customer.sdk.data.store.*
 import io.customer.sdk.module.CustomerIOModule
 import io.customer.sdk.module.CustomerIOModuleConfig
-import io.customer.sdk.queue.*
-import io.customer.sdk.repository.*
 import io.customer.sdk.repository.preference.SharedPreferenceRepository
 import io.customer.sdk.repository.preference.SharedPreferenceRepositoryImp
-import io.customer.sdk.util.*
+import io.customer.sdk.util.DateUtil
+import io.customer.sdk.util.DateUtilImpl
+import io.customer.sdk.util.DispatchersProvider
+import io.customer.sdk.util.Logger
 
 /**
  * Configuration class to configure/initialize low-level operations and objects.

@@ -1,6 +1,9 @@
+import io.customer.android.Dependencies
+
 plugins {
     id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id "org.jetbrains.kotlin.kapt"
 }
 
 android {
@@ -33,7 +36,16 @@ dependencies {
     api fileTree(dir: 'libs')
     api project(":base")
     api project(":sdk")
-    api project(":datapipeline")
+
+    implementation Dependencies.retrofit
+    implementation Dependencies.moshi
+    implementation Dependencies.retrofitMoshiConverter
+    implementation Dependencies.okhttpLoggingInterceptor
+    api Dependencies.androidxCoreKtx
+
+    kapt(Dependencies.moshiCodeGen)
+    kaptTest(Dependencies.moshiCodeGen)
+    kaptAndroidTest(Dependencies.moshiCodeGen)
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     testImplementation 'junit:junit:4.13.2'

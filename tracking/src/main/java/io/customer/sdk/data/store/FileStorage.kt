@@ -1,7 +1,6 @@
 package io.customer.sdk.data.store
 
 import android.content.Context
-import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.util.Logger
 import java.io.File
 

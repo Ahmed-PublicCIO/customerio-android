@@ -1,7 +1,6 @@
 package io.customer.sdk.api.interceptors
 
 import android.util.Base64
-import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.data.store.CustomerIOStore
 import java.nio.charset.StandardCharsets
 import okhttp3.Interceptor

@@ -57,14 +57,6 @@ dependencies {
 
     implementation Dependencies.coroutinesCore
     implementation Dependencies.coroutinesAndroid
-    implementation Dependencies.retrofit
-    implementation Dependencies.moshi
-    implementation Dependencies.retrofitMoshiConverter
-    implementation Dependencies.okhttpLoggingInterceptor
     api Dependencies.androidxCoreKtx
-
-    kapt(Dependencies.moshiCodeGen)
-    kaptTest(Dependencies.moshiCodeGen)
-    kaptAndroidTest(Dependencies.moshiCodeGen)
 }
 

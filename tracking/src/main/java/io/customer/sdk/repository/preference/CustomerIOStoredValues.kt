@@ -1,7 +1,5 @@
 package io.customer.sdk.repository.preference
 
-import io.customer.sdk.CustomerIOConfig
-import io.customer.sdk.Version
 import io.customer.sdk.data.model.Region
 import io.customer.sdk.data.store.Client
 import io.customer.sdk.util.CioLogLevel

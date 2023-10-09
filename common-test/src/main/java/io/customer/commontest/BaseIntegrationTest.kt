@@ -1,7 +1,6 @@
 package io.customer.commontest
 
 import io.customer.sdk.CustomerIO
-import io.customer.sdk.CustomerIOConfig
 import io.customer.sdk.data.model.Region
 import io.customer.sdk.extensions.random
 
