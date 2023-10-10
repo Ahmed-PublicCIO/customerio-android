@@ -2,7 +2,7 @@ package io.customer.sdk.data.request
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.util.*
+import java.util.Date
 
 @JsonClass(generateAdapter = false)
 internal enum class DeliveryType {

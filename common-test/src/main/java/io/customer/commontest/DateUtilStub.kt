@@ -2,7 +2,7 @@ package io.customer.commontest
 
 import io.customer.base.extenstions.getUnixTimestamp
 import io.customer.sdk.util.DateUtil
-import java.util.*
+import java.util.Date
 
 /**
  * Convenient alternative to mocking [DateUtil] in your test since the code is boilerplate.

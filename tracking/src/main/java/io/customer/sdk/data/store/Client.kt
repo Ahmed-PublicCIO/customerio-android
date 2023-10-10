@@ -65,18 +65,22 @@ sealed class Client(
                 other = SOURCE_ANDROID,
                 ignoreCase = true
             ) -> Android(sdkVersion = sdkVersion)
+
             source.equals(
                 other = SOURCE_REACT_NATIVE,
                 ignoreCase = true
             ) -> ReactNative(sdkVersion = sdkVersion)
+
             source.equals(
                 other = SOURCE_EXPO,
                 ignoreCase = true
             ) -> Expo(sdkVersion = sdkVersion)
+
             source.equals(
                 other = SOURCE_FLUTTER,
                 ignoreCase = true
             ) -> Flutter(sdkVersion = sdkVersion)
+
             else -> Other(source = source, sdkVersion = sdkVersion)
         }
     }

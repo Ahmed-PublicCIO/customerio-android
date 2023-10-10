@@ -74,7 +74,10 @@ class CustomerIOSharedTest : BaseTest() {
         val diIOSharedComponent = CustomerIOSharedComponent(context)
 
         val sharedPreferenceRepository: SharedPreferenceRepository = mock()
-        diIOSharedComponent.overrideDependency(SharedPreferenceRepository::class.java, sharedPreferenceRepository)
+        diIOSharedComponent.overrideDependency(
+            SharedPreferenceRepository::class.java,
+            sharedPreferenceRepository
+        )
 
         val instance = CustomerIOShared.createInstance(diStaticGraph = diGraph)
         instance.diSharedGraph = diIOSharedComponent

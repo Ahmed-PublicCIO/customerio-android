@@ -7,7 +7,8 @@
 This document goes over how we make branches, commits, and pull requests on this repository. We
 follow a specific workflow for this repository to make successful deployments for our customers.
 
-> Tip: If you have read this document already, you may want to [skip straight to the scenarios section](#Scenarios).
+> Tip: If you have read this document already, you may want
+> to [skip straight to the scenarios section](#Scenarios).
 
 # About the workflow
 
@@ -70,7 +71,10 @@ new branch `beta` is made off of the `alpha` branch and then the `alpha` branch 
 remember, all branches except `main` and `develop` are temporary). When `beta` branch is made, a
 beta deployment gets deployed.
 
-> Note: Once a release has been started (when `alpha` or `beta` branch is created), only bug fixes should be merged into the release until it's in production. If you find a bug on the `alpha` or `beta` release, then you will make a new branch off of the `alpha` or `beta` branch and make a pull request with that fix back into `alpha` or `beta` branch.
+> Note: Once a release has been started (when `alpha` or `beta` branch is created), only bug fixes
+> should be merged into the release until it's in production. If you find a bug on the `alpha`
+> or `beta` release, then you will make a new branch off of the `alpha` or `beta` branch and make a
+> pull request with that fix back into `alpha` or `beta` branch.
 
 * The *red dots* are hotfix branches. Let's say that a customer finds a critical bug in one of our
   production releases. Our team may decide that we need to get this bug fixed as soon as possible
@@ -118,7 +122,9 @@ Where did you find this bug?
   branch, fix the bug, then make a pull request merging your pull request into the `main` branch.
   After the pull request gets merged, a new production release will be made to customers.
 
-> Note: When making a bug fix pull request, it's preferred that you include an automated test (unit test function, integration test, etc) in this pull request that reproduces the bug. This is to help us feel confident the bug is indeed fixed and it will not come up again in the future.
+> Note: When making a bug fix pull request, it's preferred that you include an automated test (unit
+> test function, integration test, etc) in this pull request that reproduces the bug. This is to help
+> us feel confident the bug is indeed fixed and it will not come up again in the future.
 
 ## Make a new release
 

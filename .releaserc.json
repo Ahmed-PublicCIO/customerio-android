@@ -47,10 +47,13 @@
         "message": "chore: prepare for ${nextRelease.version}\n\n${nextRelease.notes}"
       }
     ],
-    ["@semantic-release/github", {
-      "labels": false,
-      "successComment": false,
-      "failTitle": false
-    }]
+    [
+      "@semantic-release/github",
+      {
+        "labels": false,
+        "successComment": false,
+        "failTitle": false
+      }
+    ]
   ]
 }

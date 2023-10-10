@@ -4,19 +4,51 @@ import android.content.Context
 import com.squareup.moshi.Moshi
 import io.customer.sdk.CustomerIOActivityLifecycleCallbacks
 import io.customer.sdk.CustomerIOConfig
-import io.customer.sdk.api.*
+import io.customer.sdk.api.CustomerIOApiRetryPolicy
+import io.customer.sdk.api.HttpRequestRunner
+import io.customer.sdk.api.HttpRequestRunnerImpl
+import io.customer.sdk.api.HttpRetryPolicy
+import io.customer.sdk.api.RetrofitTrackingHttpClient
+import io.customer.sdk.api.TrackingHttpClient
 import io.customer.sdk.api.interceptors.HeadersInterceptor
 import io.customer.sdk.data.moshi.adapter.BigDecimalAdapter
 import io.customer.sdk.data.moshi.adapter.CustomAttributesFactory
 import io.customer.sdk.data.moshi.adapter.UnixDateAdapter
-import io.customer.sdk.data.store.*
+import io.customer.sdk.data.store.ApplicationStoreImp
+import io.customer.sdk.data.store.BuildStoreImp
+import io.customer.sdk.data.store.CustomerIOStore
+import io.customer.sdk.data.store.DeviceStore
+import io.customer.sdk.data.store.DeviceStoreImp
+import io.customer.sdk.data.store.FileStorage
 import io.customer.sdk.hooks.CioHooksManager
 import io.customer.sdk.hooks.HooksManager
-import io.customer.sdk.queue.*
-import io.customer.sdk.repository.*
+import io.customer.sdk.queue.Queue
+import io.customer.sdk.queue.QueueImpl
+import io.customer.sdk.queue.QueueQueryRunner
+import io.customer.sdk.queue.QueueQueryRunnerImpl
+import io.customer.sdk.queue.QueueRunRequest
+import io.customer.sdk.queue.QueueRunRequestImpl
+import io.customer.sdk.queue.QueueRunner
+import io.customer.sdk.queue.QueueRunnerImpl
+import io.customer.sdk.queue.QueueStorage
+import io.customer.sdk.queue.QueueStorageImpl
+import io.customer.sdk.repository.CleanupRepository
+import io.customer.sdk.repository.CleanupRepositoryImpl
+import io.customer.sdk.repository.DeviceRepository
+import io.customer.sdk.repository.DeviceRepositoryImpl
+import io.customer.sdk.repository.ProfileRepository
+import io.customer.sdk.repository.ProfileRepositoryImpl
+import io.customer.sdk.repository.TrackRepository
+import io.customer.sdk.repository.TrackRepositoryImpl
 import io.customer.sdk.repository.preference.SitePreferenceRepository
 import io.customer.sdk.repository.preference.SitePreferenceRepositoryImpl
-import io.customer.sdk.util.*
+import io.customer.sdk.util.AndroidSimpleTimer
+import io.customer.sdk.util.DateUtil
+import io.customer.sdk.util.DateUtilImpl
+import io.customer.sdk.util.DispatchersProvider
+import io.customer.sdk.util.JsonAdapter
+import io.customer.sdk.util.Logger
+import io.customer.sdk.util.SimpleTimer
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -69,6 +101,11 @@ class CustomerIOComponent(
                 logger = logger,
                 dateUtil = dateUtil
             )
+        }
+
+    val activityLifecycleCallbacks: CustomerIOActivityLifecycleCallbacks
+        get() = override() ?: getSingletonInstanceCreate {
+            CustomerIOActivityLifecycleCallbacks(config = sdkConfig)
         }
 
     internal val cleanupRepository: CleanupRepository
@@ -143,11 +180,6 @@ class CustomerIOComponent(
             dateUtil = dateUtil,
             logger = logger
         )
-
-    val activityLifecycleCallbacks: CustomerIOActivityLifecycleCallbacks
-        get() = override() ?: getSingletonInstanceCreate {
-            CustomerIOActivityLifecycleCallbacks(config = sdkConfig)
-        }
 
     private fun buildStore(): CustomerIOStore {
         return override() ?: object : CustomerIOStore {

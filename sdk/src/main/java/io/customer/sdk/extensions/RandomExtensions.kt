@@ -1,6 +1,6 @@
 package io.customer.sdk.extensions
 
-import java.util.*
+import java.util.Random
 
 /**
  * Set of extensions for primitive types to get a random value. Used for tests.

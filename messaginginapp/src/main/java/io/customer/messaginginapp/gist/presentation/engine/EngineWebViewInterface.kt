@@ -30,12 +30,15 @@ class EngineWebViewInterface constructor(
                 "routeLoaded" -> {
                     (eventParameters["route"] as String).let { route -> listener.routeLoaded(route) }
                 }
+
                 "routeChanged" -> {
                     (eventParameters["route"] as String).let { route -> listener.routeChanged(route) }
                 }
+
                 "routeError" -> {
                     (eventParameters["route"] as String).let { route -> listener.routeError(route) }
                 }
+
                 "sizeChanged" -> {
                     (eventParameters["width"] as Double).let { width ->
                         (eventParameters["height"] as Double).let { height ->
@@ -43,6 +46,7 @@ class EngineWebViewInterface constructor(
                         }
                     }
                 }
+
                 "tap" -> {
                     (eventParameters["action"] as String).let { action ->
                         (eventParameters["name"] as String).let { name ->
@@ -52,6 +56,7 @@ class EngineWebViewInterface constructor(
                         }
                     }
                 }
+
                 "error" -> listener.error()
             }
         }

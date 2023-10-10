@@ -38,7 +38,8 @@ internal class EngineWebView @JvmOverloads constructor(
         val jsonString = Gson().toJson(configuration)
         encodeToBase64(jsonString)?.let { options ->
             elapsedTimer.start("Engine render for message: ${configuration.messageId}")
-            val messageUrl = "${GistSdk.gistEnvironment.getGistRendererUrl()}/index.html?options=$options"
+            val messageUrl =
+                "${GistSdk.gistEnvironment.getGistRendererUrl()}/index.html?options=$options"
             Log.i(GIST_TAG, "Rendering message with URL: $messageUrl")
             webView.loadUrl(messageUrl)
             webView.settings.javaScriptEnabled = true
@@ -58,19 +59,36 @@ internal class EngineWebView @JvmOverloads constructor(
                     return !url.startsWith("https://code.gist.build")
                 }
 
-                override fun onReceivedError(view: WebView?, errorCod: Int, description: String, failingUrl: String?) {
+                override fun onReceivedError(
+                    view: WebView?,
+                    errorCod: Int,
+                    description: String,
+                    failingUrl: String?
+                ) {
                     listener?.error()
                 }
 
-                override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
+                override fun onReceivedHttpError(
+                    view: WebView?,
+                    request: WebResourceRequest?,
+                    errorResponse: WebResourceResponse?
+                ) {
                     listener?.error()
                 }
 
-                override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+                override fun onReceivedError(
+                    view: WebView?,
+                    request: WebResourceRequest?,
+                    error: WebResourceError?
+                ) {
                     listener?.error()
                 }
 
-                override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
+                override fun onReceivedSslError(
+                    view: WebView?,
+                    handler: SslErrorHandler?,
+                    error: SslError?
+                ) {
                     listener?.error()
                 }
             }

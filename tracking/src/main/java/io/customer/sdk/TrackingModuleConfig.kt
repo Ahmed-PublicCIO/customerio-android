@@ -10,15 +10,12 @@ import io.customer.sdk.extensions.getProperty
 import io.customer.sdk.extensions.takeIfNotBlank
 import io.customer.sdk.module.CustomerIOModuleConfig
 import io.customer.sdk.repository.CleanupRepository
-import io.customer.sdk.repository.DeviceRepository
-import io.customer.sdk.repository.ProfileRepository
-import io.customer.sdk.repository.TrackRepository
 import io.customer.sdk.util.CioLogLevel
 import io.customer.sdk.util.Seconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class TrackingModuleConfig(private val diGraph: CustomerIOComponent) : CustomerIOModuleConfig {
+class TrackingModuleConfig(val diGraph: CustomerIOComponent) : CustomerIOModuleConfig {
 
     class Builder @JvmOverloads constructor(
         private val siteId: String,
@@ -187,7 +184,6 @@ class TrackingModuleConfig(private val diGraph: CustomerIOComponent) : CustomerI
                 context = appContext
             )
             val client = TrackingModuleConfig(diGraph)
-            val logger = diGraph.logger
 
             appContext.registerActivityLifecycleCallbacks(diGraph.activityLifecycleCallbacks)
 
@@ -196,21 +192,6 @@ class TrackingModuleConfig(private val diGraph: CustomerIOComponent) : CustomerI
             return client
         }
     }
-
-    private val trackRepository: TrackRepository
-        get() = diGraph.trackRepository
-
-    private val deviceRepository: DeviceRepository
-        get() = diGraph.deviceRepository
-
-    private val profileRepository: ProfileRepository
-        get() = diGraph.profileRepository
-
-    private val siteId: String
-        get() = diGraph.sdkConfig.siteId
-
-    private val sdkVersion: String
-        get() = Version.version
 
     private val cleanupRepository: CleanupRepository
         get() = diGraph.cleanupRepository

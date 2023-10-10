@@ -1,6 +1,6 @@
 package io.customer.android.sample.kotlin_compose
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**

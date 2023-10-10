@@ -29,6 +29,7 @@ internal class MessagingPushLifecycleCallback internal constructor(
                     intentArguments.getString(PENDING_CONTENT_ACTION_LINK)
                 )
             }
+
             else -> {}
         }
     }

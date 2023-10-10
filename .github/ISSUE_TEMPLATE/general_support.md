@@ -11,7 +11,7 @@ assignees: ''
 
 **SDK version:** <!--The SDK version that you're currently using.-->
 
-**Are logs available?** 
+**Are logs available?**
 <!-- Enable logs by using `setLogLevel(CioLogLevel.DEBUG)` when initializing the CustomerIO SDK. Attach the logs to this issue (make sure to sanitize any keys before attaching) or send them to win@customer.io to help with troubleshooting (with a link to this issue for easy reference).-->
 
 **Describe the issue**

@@ -13,6 +13,7 @@ sealed class QueueTaskGroup {
     data class IdentifyProfile(val identifier: String) : QueueTaskGroup() {
         override fun toString(): String = "identified_profile_$identifier"
     }
+
     data class RegisterPushToken(val token: String) : QueueTaskGroup() {
         override fun toString(): String = "registered_push_token_$token"
     }

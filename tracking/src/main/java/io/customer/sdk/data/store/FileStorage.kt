@@ -32,7 +32,8 @@ class FileStorage internal constructor(
     private val logger: Logger
 ) {
 
-    val sdkRootDirectoryPath = File(context.filesDir, "io.customer") // All files in the SDK exist in here.
+    val sdkRootDirectoryPath =
+        File(context.filesDir, "io.customer") // All files in the SDK exist in here.
     val siteIdRootDirectoryPath: File
         get() = File(sdkRootDirectoryPath, config.siteId) // Root directory for given <site-id>
 

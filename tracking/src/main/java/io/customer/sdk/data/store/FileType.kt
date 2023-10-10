@@ -16,6 +16,7 @@ sealed interface FileType {
 
     class QueueTask(private val fileId: String) : FileType {
         override fun getFileName(): String = "$fileId.json"
-        override fun getFilePath(existingPath: File): File = File(File(existingPath, "queue"), "tasks")
+        override fun getFilePath(existingPath: File): File =
+            File(File(existingPath, "queue"), "tasks")
     }
 }

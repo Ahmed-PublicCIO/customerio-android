@@ -6,8 +6,8 @@ task runJacocoTestReport(type: JacocoReport) {
     dependsOn 'testDebugUnitTest' // run tests and then generate report 
 
     reports {
-        xml.required = true 
-        html.required = true 
+        xml.required = true
+        html.required = true
     }
 
     def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']

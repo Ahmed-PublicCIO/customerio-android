@@ -2,10 +2,7 @@ package io.customer.messagingpush
 
 import androidx.annotation.VisibleForTesting
 import io.customer.base.internal.InternalCustomerIOApi
-import io.customer.messagingpush.di.deepLinkUtil
 import io.customer.messagingpush.di.fcmTokenProvider
-import io.customer.messagingpush.di.pushTrackingUtil
-import io.customer.messagingpush.lifecycle.MessagingPushLifecycleCallback
 import io.customer.sdk.CustomerIO
 import io.customer.sdk.CustomerIOInstance
 import io.customer.sdk.di.CustomerIOComponent
@@ -36,13 +33,13 @@ internal constructor(
 
     override fun initialize() {
         getCurrentFcmToken()
-        diGraph.activityLifecycleCallbacks.registerCallback(
-            MessagingPushLifecycleCallback(
-                moduleConfig = moduleConfig,
-                deepLinkUtil = diGraph.deepLinkUtil,
-                pushTrackingUtil = diGraph.pushTrackingUtil
-            )
-        )
+//        diGraph.activityLifecycleCallbacks.registerCallback(
+//            MessagingPushLifecycleCallback(
+//                moduleConfig = moduleConfig,
+//                deepLinkUtil = diGraph.deepLinkUtil,
+//                pushTrackingUtil = diGraph.pushTrackingUtil
+//            )
+//        )
     }
 
     /**
@@ -54,7 +51,7 @@ internal constructor(
      */
     private fun getCurrentFcmToken() {
         fcmTokenProvider.getCurrentToken { token ->
-//            token?.let { customerIO.registerDeviceToken(token) }
+            token?.let { CustomerIO.instance().getImplementation().registerDeviceToken(token) }
         }
     }
 

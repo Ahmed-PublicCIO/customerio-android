@@ -62,8 +62,9 @@ class CustomerIOIntegrationTest : BaseIntegrationTest() {
     // Testing 400 response from API scenario
 
     @Test
-    fun test_givenSendTestPushNotification_givenHttp400Response_expectDeleteTaskAndNotRetry() = runTest {
-        val httpResponseBody = """
+    fun test_givenSendTestPushNotification_givenHttp400Response_expectDeleteTaskAndNotRetry() =
+        runTest {
+            val httpResponseBody = """
             {
               "meta": {
                 "errors": [
@@ -71,16 +72,16 @@ class CustomerIOIntegrationTest : BaseIntegrationTest() {
                 ]
               }
             }
-        """.trimIndent()
+            """.trimIndent()
 
-        mockWebServer.enqueue(400, httpResponseBody)
+            mockWebServer.enqueue(400, httpResponseBody)
 
-        CustomerIO.instance().trackMetric("", MetricEvent.opened, String.random)
+            CustomerIO.instance().trackMetric("", MetricEvent.opened, String.random)
 
-        di.queueStorage.getInventory().count() shouldBeEqualTo 1
-        di.queue.run() // waits until all BQ tasks execute
-        di.queueStorage.getInventory().count() shouldBeEqualTo 0
+            di.queueStorage.getInventory().count() shouldBeEqualTo 1
+            di.queue.run() // waits until all BQ tasks execute
+            di.queueStorage.getInventory().count() shouldBeEqualTo 0
 
-        mockWebServer.requestCount shouldBeEqualTo 1
-    }
+            mockWebServer.requestCount shouldBeEqualTo 1
+        }
 }

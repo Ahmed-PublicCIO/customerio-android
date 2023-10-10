@@ -3,7 +3,7 @@ package io.customer.sdk.extensions
 import android.content.SharedPreferences
 import io.customer.base.extenstions.getUnixTimestamp
 import io.customer.base.extenstions.unixTimeToDate
-import java.util.*
+import java.util.Date
 
 fun SharedPreferences.Editor.putDate(key: String, value: Date?) {
     val newValue = value?.getUnixTimestamp() ?: Long.MIN_VALUE

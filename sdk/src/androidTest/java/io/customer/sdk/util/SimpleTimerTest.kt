@@ -82,7 +82,8 @@ class SimpleTimerTest : BaseTest() {
     @UiThreadTest
     @Test
     fun cancel_givenCallAfterTimerStarts_expectCancelsTimerAndStartsNew() {
-        var didSchedule = timer.scheduleIfNotAlready(Seconds(1.0)) {} // provide a value > 0 to start timer but not finish by time we cancel timer
+        var didSchedule =
+            timer.scheduleIfNotAlready(Seconds(1.0)) {} // provide a value > 0 to start timer but not finish by time we cancel timer
         didSchedule.shouldBeTrue()
 
         timer.cancel()

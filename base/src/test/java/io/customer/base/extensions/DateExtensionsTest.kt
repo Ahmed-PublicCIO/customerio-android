@@ -7,7 +7,7 @@ import io.customer.base.extenstions.isOlderThan
 import io.customer.base.extenstions.subtract
 import io.customer.base.extenstions.unixTimeToDate
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 import java.util.concurrent.TimeUnit
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldBeFalse
@@ -16,7 +16,8 @@ import org.junit.Test
 
 class DateExtensionsTest {
 
-    fun getDateFromIso8601(parseString: String): Date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZ").parse(parseString)
+    fun getDateFromIso8601(parseString: String): Date =
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZ").parse(parseString)
 
     // make sure to use a recent date. a hard-coded date in the year 2000 used to be used but it gave false positives in the tests.
     // Changed to a more modern time and tests began failing.
@@ -67,11 +68,13 @@ class DateExtensionsTest {
 
     @Test
     fun isOlderThan_givenDateThatIsOlder_expectTrue() {
-        Date().subtract(2, TimeUnit.DAYS).isOlderThan(Date().subtract(1, TimeUnit.DAYS)).shouldBeTrue()
+        Date().subtract(2, TimeUnit.DAYS).isOlderThan(Date().subtract(1, TimeUnit.DAYS))
+            .shouldBeTrue()
     }
 
     @Test
     fun isOlderThan_givenDateThatIsNewer_expectFalse() {
-        Date().subtract(1, TimeUnit.DAYS).isOlderThan(Date().subtract(2, TimeUnit.DAYS)).shouldBeFalse()
+        Date().subtract(1, TimeUnit.DAYS).isOlderThan(Date().subtract(2, TimeUnit.DAYS))
+            .shouldBeFalse()
     }
 }

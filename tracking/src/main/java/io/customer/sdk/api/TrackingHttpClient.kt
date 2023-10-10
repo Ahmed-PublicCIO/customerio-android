@@ -2,8 +2,8 @@ package io.customer.sdk.api
 
 import io.customer.sdk.api.service.CustomerIOService
 import io.customer.sdk.data.model.CustomAttributes
-import io.customer.sdk.data.request.*
 import io.customer.sdk.data.request.DeliveryEvent
+import io.customer.sdk.data.request.Device
 import io.customer.sdk.data.request.DeviceRequest
 import io.customer.sdk.data.request.Event
 import io.customer.sdk.data.request.Metric

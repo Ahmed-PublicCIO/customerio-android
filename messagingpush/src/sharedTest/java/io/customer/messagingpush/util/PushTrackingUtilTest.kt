@@ -53,6 +53,10 @@ class PushTrackingUtilTest : BaseTest() {
 
         result.shouldBeTrue()
 
-        verify(trackRepositoryMock).trackMetric(givenDeliveryId, MetricEvent.opened, givenDeviceToken)
+        verify(trackRepositoryMock).trackMetric(
+            givenDeliveryId,
+            MetricEvent.opened,
+            givenDeviceToken
+        )
     }
 }

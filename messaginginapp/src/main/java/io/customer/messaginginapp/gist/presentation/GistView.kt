@@ -57,7 +57,12 @@ class GistView @JvmOverloads constructor(
         var shouldLogAction = true
         currentMessage?.let { message ->
             currentRoute?.let { route ->
-                GistSdk.handleGistAction(message = message, currentRoute = route, action = action, name = name)
+                GistSdk.handleGistAction(
+                    message = message,
+                    currentRoute = route,
+                    action = action,
+                    name = name
+                )
                 when {
                     action.startsWith("gist://") -> {
                         val gistAction = URI(action)
@@ -68,30 +73,36 @@ class GistView @JvmOverloads constructor(
                                 Log.i(GIST_TAG, "Dismissing from action: $action")
                                 GistSdk.dismissPersistentMessage(message)
                             }
+
                             "loadPage" -> {
                                 val url = urlQuery.getValue("url")
                                 val intent = Intent(Intent.ACTION_VIEW)
                                 intent.data = Uri.parse(url)
                                 startActivity(context, intent, null)
                             }
+
                             "showMessage" -> {
                                 GistSdk.handleGistClosed(message)
                                 val messageId = urlQuery.getValue("messageId")
                                 val propertiesBase64 = urlQuery.getValue("properties")
-                                val parameterBinary = Base64.decode(propertiesBase64, Base64.DEFAULT)
-                                val parameterString = String(parameterBinary, StandardCharsets.UTF_8)
+                                val parameterBinary =
+                                    Base64.decode(propertiesBase64, Base64.DEFAULT)
+                                val parameterString =
+                                    String(parameterBinary, StandardCharsets.UTF_8)
                                 val map: Map<String, Any> = HashMap()
                                 val properties = Gson().fromJson(parameterString, map.javaClass)
                                 GistSdk.getInstance().showMessage(
                                     Message(messageId = messageId, properties = properties)
                                 )
                             }
+
                             else -> {
                                 shouldLogAction = false
                                 Log.i(GIST_TAG, "Gist action unhandled")
                             }
                         }
                     }
+
                     system -> {
                         try {
                             shouldLogAction = false
@@ -149,9 +160,13 @@ class GistView @JvmOverloads constructor(
             }
         }
     }
+
     override fun routeChanged(newRoute: String) {}
     override fun sizeChanged(width: Double, height: Double) {
-        listener?.onGistViewSizeChanged(getSizeBasedOnDPI(width.toInt()), getSizeBasedOnDPI(height.toInt()))
+        listener?.onGistViewSizeChanged(
+            getSizeBasedOnDPI(width.toInt()),
+            getSizeBasedOnDPI(height.toInt())
+        )
     }
 
     private fun getSizeBasedOnDPI(size: Int): Int {

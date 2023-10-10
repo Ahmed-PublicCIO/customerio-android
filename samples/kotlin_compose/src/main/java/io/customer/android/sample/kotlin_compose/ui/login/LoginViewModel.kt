@@ -65,11 +65,19 @@ class LoginViewModel @Inject constructor(
             userRepository.login(email = email, name = name, isGuest = isGuest)
             CustomerIO.instance().identify(
                 identifier = email,
-                attributes = mapOf("name" to name, "is_guest" to isGuest, "cio_source" to "track API")
+                attributes = mapOf(
+                    "name" to name,
+                    "is_guest" to isGuest,
+                    "cio_source" to "track API"
+                )
             )
             CustomerIO.instance().dataPipeline().identify(
                 userId = email,
-                traits = mapOf("name" to name, "is_guest" to isGuest, "cio_source" to "data pipeline")
+                traits = mapOf(
+                    "name" to name,
+                    "is_guest" to isGuest,
+                    "cio_source" to "data pipeline"
+                )
             )
             CustomerIO.instance().dataPipeline().track(
                 name = "login",

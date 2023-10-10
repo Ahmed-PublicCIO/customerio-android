@@ -12,7 +12,40 @@ import io.customer.sdk.module.CustomerIOModuleConfig
  * Allows mocking of [CustomerIO] for your automated tests in your project. Mock [CustomerIO] to assert your code is calling functions
  * of the SDK and/or do not have the SDK run it's real implementation during automated tests.
  */
-interface CustomerIOInstance
+interface CustomerIOInstance {
+    val registeredDeviceToken: String?
+
+    fun identify(identifier: String)
+
+    fun identify(
+        identifier: String,
+        attributes: Map<String, Any>
+    )
+
+    fun track(name: String)
+
+    fun track(
+        name: String,
+        attributes: Map<String, Any>
+    )
+
+    fun screen(name: String)
+
+    fun screen(
+        name: String,
+        attributes: Map<String, Any>
+    )
+
+    fun clearIdentify()
+
+    fun trackMetric(
+        deliveryID: String,
+        event: String,
+        deviceToken: String
+    )
+
+    fun registerDeviceToken(token: String)
+}
 
 interface CustomerIOImplementation : CustomerIOModule<CustomerIOModuleConfig>, CustomerIOInstance
 
@@ -42,6 +75,10 @@ class CustomerIO internal constructor(
         }
     }
 
+    fun getImplementation(): CustomerIOImplementation {
+        return implementation
+    }
+
     class Builder @JvmOverloads constructor(
         val appContext: Application
     ) {
@@ -62,7 +99,6 @@ class CustomerIO internal constructor(
             return this
         }
 
-        @InternalCustomerIOApi
         fun build(): CustomerIO {
             require(implementation != null) {
                 "A core implementation must be set before building CustomerIO."

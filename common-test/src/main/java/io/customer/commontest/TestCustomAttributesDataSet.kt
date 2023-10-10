@@ -26,7 +26,11 @@ enum class TestCustomAttributesDataSet {
             NestedAttributes -> mapOf("nested" to mapOf("nested-key" to "nested-value"))
             Date -> mapOf("date" to 1646410611L.unixTimeToDate())
             BigDecimal -> mapOf("big-decimal" to java.math.BigDecimal(Double.MAX_VALUE + 1))
-            Enum -> mapOf("ENUM-key" to CustomAttributesTestEnum.ENUM, "enum-key" to CustomAttributesTestEnum.enum).toSortedMap()
+            Enum -> mapOf(
+                "ENUM-key" to CustomAttributesTestEnum.ENUM,
+                "enum-key" to CustomAttributesTestEnum.enum
+            ).toSortedMap()
+
             DataClass -> mapOf("data" to CustomAttributesTestDataClass(kotlin.String.random))
         }
 
@@ -38,21 +42,27 @@ enum class TestCustomAttributesDataSet {
             String -> """
                 {"string":"foobar"}
             """.trimIndent()
+
             Long -> """
                 {"long":394949}
             """.trimIndent()
+
             NestedAttributes -> """
                 {"nested":{"nested-key":"nested-value"}}
             """.trimIndent()
+
             Date -> """
                 {"date":1646410611}
             """.trimIndent()
+
             BigDecimal -> """
                 {"big-decimal":"179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368"}
             """.trimIndent()
+
             Enum -> """
                 {"ENUM-key":"ENUM","enum-key":"enum"}
             """.trimIndent()
+
             DataClass -> """
                 {}
             """.trimIndent()

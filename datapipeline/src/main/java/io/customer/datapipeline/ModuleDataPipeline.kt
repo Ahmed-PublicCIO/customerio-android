@@ -6,10 +6,13 @@ import com.segment.analytics.kotlin.core.Analytics
 import com.segment.analytics.kotlin.core.Properties
 import com.segment.analytics.kotlin.core.Traits
 import com.segment.analytics.kotlin.core.emptyJsonObject
+import com.segment.analytics.kotlin.core.platform.DestinationPlugin
+import com.segment.analytics.kotlin.core.platform.Plugin
 import com.segment.analytics.kotlin.core.utilities.JsonAnySerializer
 import io.customer.sdk.CustomerIO
+import io.customer.sdk.CustomerIOImplementation
 import io.customer.sdk.di.CustomerIOComponent
-import io.customer.sdk.module.CustomerIOModule
+import kotlin.reflect.KClass
 import kotlinx.serialization.SerializationStrategy
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -19,7 +22,7 @@ import kotlinx.serialization.serializer
 class ModuleDataPipeline(
     override val moduleConfig: DataPipelineModuleConfig,
     private val overrideDiGraph: CustomerIOComponent?
-) : CustomerIOModule<DataPipelineModuleConfig> {
+) : CustomerIOImplementation {
 
     override val moduleName: String = ModuleDataPipeline.moduleName
 
@@ -355,5 +358,72 @@ class ModuleDataPipeline(
      */
     fun alias(newId: String) {
         analytics?.alias(newId)
+    }
+
+    // Platform specific APIs
+    /**
+     * Register a plugin to the analytics timeline
+     * @param plugin [Plugin] to be added
+     */
+    fun add(plugin: Plugin) = analytics?.add(plugin)
+
+    /**
+     * Retrieve the first match of registered plugin. It finds
+     *      1. the first instance of the given class/interface
+     *      2. or the first instance of subclass of the given class/interface
+     * @param plugin [KClass]
+     */
+    fun <T : Plugin> find(plugin: KClass<T>): T? = analytics?.find(plugin)
+
+    /**
+     * Retrieve the first match of registered destination plugin by key. It finds
+     * @param destinationKey [String]
+     */
+    fun find(destinationKey: String): DestinationPlugin? = analytics?.find(destinationKey)
+
+    /**
+     * Retrieve the first match of registered plugin. It finds
+     *      1. all instances of the given class/interface
+     *      2. and all instances of subclass of the given class/interface
+     * @param plugin [KClass]
+     */
+    fun <T : Plugin> findAll(plugin: KClass<T>): List<T> = analytics?.findAll(plugin) ?: emptyList()
+
+    /**
+     * Remove a plugin from the analytics timeline using its name
+     * @param plugin [Plugin] to be remove
+     */
+    fun remove(plugin: Plugin) = analytics?.remove(plugin)
+
+    /**
+     * Apply a closure to all plugins registered to the analytics client. Ideal for invoking
+     * functions for Utility plugins
+     */
+    fun applyClosureToPlugins(closure: (Plugin) -> Unit) = analytics?.applyClosureToPlugins(closure)
+
+    override val registeredDeviceToken: String?
+        get() = TODO("Not yet implemented")
+
+    override fun identify(identifier: String) = identify(userId = identifier)
+
+    override fun identify(identifier: String, attributes: Map<String, Any>) =
+        identify(userId = identifier, traits = attributes)
+
+    override fun track(name: String) = track(name = name, properties = emptyJsonObject)
+
+    override fun track(name: String, attributes: Map<String, Any>) =
+        track(name = name, properties = attributes)
+
+    override fun screen(name: String) = screen(title = name)
+
+    override fun screen(name: String, attributes: Map<String, Any>) =
+        screen(title = name, properties = attributes)
+
+    override fun clearIdentify() {
+        analytics?.reset()
+    }
+
+    override fun trackMetric(deliveryID: String, event: String, deviceToken: String) {
+        TODO("Not yet implemented")
     }
 }

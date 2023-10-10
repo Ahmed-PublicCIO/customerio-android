@@ -25,7 +25,7 @@ internal val CustomerIOComponent.fcmTokenProvider: DeviceTokenProvider
 
 internal val CustomerIOComponent.moduleConfig: MessagingPushModuleConfig
     get() = override()
-        ?: sdkConfig.modules[ModuleMessagingPushFCM.MODULE_NAME]?.moduleConfig as? MessagingPushModuleConfig
+        ?: modules[ModuleMessagingPushFCM.MODULE_NAME]?.moduleConfig as? MessagingPushModuleConfig
         ?: MessagingPushModuleConfig.default()
 
 internal val CustomerIOComponent.deepLinkUtil: DeepLinkUtil
@@ -33,18 +33,20 @@ internal val CustomerIOComponent.deepLinkUtil: DeepLinkUtil
 
 @InternalCustomerIOApi
 val CustomerIOComponent.pushTrackingUtil: PushTrackingUtil
-    get() = override() ?: PushTrackingUtilImpl(trackRepository)
+    get() = override() ?: PushTrackingUtilImpl(
+        customerIOImplementation = CustomerIO.instance().getImplementation()
+    )
 
 internal val CustomerIOComponent.pushMessageProcessor: PushMessageProcessor
     get() = override() ?: getSingletonInstanceCreate {
         PushMessageProcessorImpl(
             logger = logger,
             moduleConfig = moduleConfig,
-            trackRepository = trackRepository
+            customerIOImplementation = CustomerIO.instance().getImplementation()
         )
     }
 
 fun CustomerIO.pushMessaging(): ModuleMessagingPushFCM {
-    return diGraph.sdkConfig.modules[ModuleMessagingPushFCM.MODULE_NAME] as? ModuleMessagingPushFCM
+    return diGraph.modules[ModuleMessagingPushFCM.MODULE_NAME] as? ModuleMessagingPushFCM
         ?: throw IllegalStateException("ModuleMessagingPushFCM not initialized")
 }

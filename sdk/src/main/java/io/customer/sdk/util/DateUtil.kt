@@ -1,7 +1,7 @@
 package io.customer.sdk.util
 
 import io.customer.base.extenstions.getUnixTimestamp
-import java.util.*
+import java.util.Date
 
 /**
  * Exists to make test functions easier to write since we can mock the date.

@@ -75,9 +75,11 @@ internal class HookManagerTest : BaseTest() {
                 is ModuleHook.BeforeProfileStoppedBeingIdentified -> {
                     cioHooksManager.onHookUpdate(profileIdentifiedHook)
                 }
+
                 is ModuleHook.ProfileIdentifiedHook -> {
                     cioHooksManager.onHookUpdate(beforeProfileStoppedBeingIdentifiedHook)
                 }
+
                 is ModuleHook.ScreenTrackedHook -> {
                     cioHooksManager.onHookUpdate(screenTrackedHook)
                 }

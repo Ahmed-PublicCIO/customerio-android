@@ -132,47 +132,58 @@ class MemoryLeakageInstrumentedTest {
         LeakAssertions.assertNoLeaks()
 
         // Click the send custom event button.
-        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_custom_event_button)).performClick()
+        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_custom_event_button))
+            .performClick()
 
         // Enter the event name, property name, and property value.
         composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_event_name_input)).apply {
             performTextInput("custom event test for memory leak")
         }
 
-        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_property_name_input)).apply {
-            performTextInput("test property")
-        }
+        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_property_name_input))
+            .apply {
+                performTextInput("test property")
+            }
 
-        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_property_value_input)).apply {
-            performTextInput("test value")
-        }
+        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_property_value_input))
+            .apply {
+                performTextInput("test value")
+            }
 
         // Click the send button 10
         for (i in 0..10) {
-            composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_send_event_button)).performClick()
+            composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_send_event_button))
+                .performClick()
         }
 
         // Assert that there are no leaks.
         LeakAssertions.assertNoLeaks()
 
         // Click the back button.
-        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_back_button_icon), useUnmergedTree = true).performClick()
+        composeTestRule.onNodeWithTag(
+            appContext.getString(R.string.acd_back_button_icon),
+            useUnmergedTree = true
+        ).performClick()
 
         // Click the set device attribute button.
-        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_device_attribute_button)).performClick()
+        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_device_attribute_button))
+            .performClick()
 
         // Enter the attribute name and value.
-        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_attribute_name_input)).apply {
-            performTextInput("memory test attribute")
-        }
+        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_attribute_name_input))
+            .apply {
+                performTextInput("memory test attribute")
+            }
 
-        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_attribute_value_input)).apply {
-            performTextInput("memory test attribute")
-        }
+        composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_attribute_value_input))
+            .apply {
+                performTextInput("memory test attribute")
+            }
 
         // Click the send button 10
         for (i in 0..10) {
-            composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_send_device_attribute_button)).performClick()
+            composeTestRule.onNodeWithTag(appContext.getString(R.string.acd_send_device_attribute_button))
+                .performClick()
         }
 
         // Assert that there are no leaks.

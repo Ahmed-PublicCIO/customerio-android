@@ -4,7 +4,11 @@ import io.customer.sdk.queue.type.QueueTaskMetadata
 import io.customer.sdk.util.Logger
 
 interface QueueQueryRunner {
-    fun getNextTask(queue: List<QueueTaskMetadata>, lastFailedTask: QueueTaskMetadata?): QueueTaskMetadata?
+    fun getNextTask(
+        queue: List<QueueTaskMetadata>,
+        lastFailedTask: QueueTaskMetadata?
+    ): QueueTaskMetadata?
+
     fun reset()
 }
 
@@ -13,7 +17,10 @@ internal class QueueQueryRunnerImpl(
 ) : QueueQueryRunner {
     internal val queryCriteria = QueueQueryCriteria()
 
-    override fun getNextTask(queue: List<QueueTaskMetadata>, lastFailedTask: QueueTaskMetadata?): QueueTaskMetadata? {
+    override fun getNextTask(
+        queue: List<QueueTaskMetadata>,
+        lastFailedTask: QueueTaskMetadata?
+    ): QueueTaskMetadata? {
         if (queue.isEmpty()) return null
         if (lastFailedTask != null) updateCriteria(lastFailedTask)
 

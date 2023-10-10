@@ -1,5 +1,6 @@
 package io.customer.messaginginapp.gist.data.model
-import java.util.*
+
+import java.util.UUID
 
 enum class MessagePosition(val position: String) {
     TOP("top"),
@@ -62,7 +63,13 @@ class GistMessageProperties {
                     }
                 }
             }
-            return GistProperties(routeRule = routeRule, elementId = elementId, campaignId = campaignId, position = position, persistent = persistent)
+            return GistProperties(
+                routeRule = routeRule,
+                elementId = elementId,
+                campaignId = campaignId,
+                position = position,
+                persistent = persistent
+            )
         }
     }
 }

@@ -1,8 +1,7 @@
 package io.customer.messagingpush.util
 
 import android.os.Bundle
-import io.customer.sdk.data.request.MetricEvent
-import io.customer.sdk.repository.TrackRepository
+import io.customer.sdk.CustomerIOImplementation
 
 interface PushTrackingUtil {
     fun parseLaunchedActivityForTracking(bundle: Bundle): Boolean
@@ -14,7 +13,7 @@ interface PushTrackingUtil {
 }
 
 class PushTrackingUtilImpl(
-    private val trackRepository: TrackRepository
+    private val customerIOImplementation: CustomerIOImplementation
 ) : PushTrackingUtil {
 
     override fun parseLaunchedActivityForTracking(bundle: Bundle): Boolean {
@@ -23,10 +22,10 @@ class PushTrackingUtilImpl(
 
         if (deliveryId == null || deliveryToken == null) return false
 
-        trackRepository.trackMetric(
+        customerIOImplementation.trackMetric(
             deliveryID = deliveryId,
             deviceToken = deliveryToken,
-            event = MetricEvent.opened
+            event = "opened"
         )
 
         return true

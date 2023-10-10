@@ -3,7 +3,7 @@ package io.customer.sdk.queue.type
 import com.squareup.moshi.JsonClass
 import io.customer.base.extenstions.unixTimeToDate
 import io.customer.sdk.extensions.random
-import java.util.*
+import java.util.Date
 
 // / Pointer to full queue task in persistent storage.
 // / This data structure is meant to be as small as possible with the
@@ -23,6 +23,12 @@ data class QueueTaskMetadata(
 ) {
     companion object {
         val random: QueueTaskMetadata
-            get() = QueueTaskMetadata(String.random, String.random, null, null, 1644600699L.unixTimeToDate())
+            get() = QueueTaskMetadata(
+                String.random,
+                String.random,
+                null,
+                null,
+                1644600699L.unixTimeToDate()
+            )
     }
 }

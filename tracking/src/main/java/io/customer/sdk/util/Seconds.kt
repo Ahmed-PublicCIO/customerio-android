@@ -21,6 +21,7 @@ data class Seconds(
 
     override fun toString(): String = "$value seconds"
 }
+
 fun Double.toSeconds(): Seconds = Seconds(this)
 
 data class Milliseconds(

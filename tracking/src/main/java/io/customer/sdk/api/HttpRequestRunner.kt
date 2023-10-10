@@ -66,7 +66,9 @@ internal class HttpRequestRunnerImpl(
 
         // parse the server response for use later.
         // First, try to get a parsed version of the HTTP response body. Then, use the raw JSON response. If that also fails, return a generic default message to the customer.
-        val parsedCustomerIOServerResponse = parseCustomerIOErrorBody(httpResponseErrorBodyString)?.message ?: httpResponseErrorBodyString ?: "(server did not give a response)"
+        val parsedCustomerIOServerResponse =
+            parseCustomerIOErrorBody(httpResponseErrorBodyString)?.message
+                ?: httpResponseErrorBodyString ?: "(server did not give a response)"
 
         when (val statusCode = response.code()) {
             in 500 until 600 -> {
@@ -84,16 +86,22 @@ internal class HttpRequestRunnerImpl(
                     Result.failure(CustomerIOError.ServerDown())
                 }
             }
+
             401 -> {
                 pauseHttpRequests()
 
                 return Result.failure(CustomerIOError.Unauthorized())
             }
+
             400 -> {
                 return Result.failure(CustomerIOError.BadRequest400(parsedCustomerIOServerResponse))
             }
+
             else -> {
-                val customerIOError = CustomerIOError.UnsuccessfulStatusCode(statusCode, parsedCustomerIOServerResponse)
+                val customerIOError = CustomerIOError.UnsuccessfulStatusCode(
+                    statusCode,
+                    parsedCustomerIOServerResponse
+                )
 
                 logger.error("4xx HTTP status code response. Probably a bug? $parsedCustomerIOServerResponse")
 

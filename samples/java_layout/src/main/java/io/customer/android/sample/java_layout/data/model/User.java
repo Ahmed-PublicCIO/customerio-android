@@ -7,14 +7,18 @@ import androidx.annotation.NonNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.customer.android.sample.java_layout.utils.StringUtils;
 import io.customer.android.sample.java_layout.support.Optional;
+import io.customer.android.sample.java_layout.utils.StringUtils;
 
 public class User {
-    private static class Keys {
-        static final String DISPLAY_NAME = "user_display_name";
-        static final String EMAIL = "user_email";
-        static final String IS_GUEST = "user_is_guest";
+    private final String email;
+    private final String displayName;
+    private final boolean isGuest;
+
+    public User(String email, String displayName, boolean isGuest) {
+        this.email = email;
+        this.displayName = displayName;
+        this.isGuest = isGuest;
     }
 
     @NonNull
@@ -37,16 +41,6 @@ public class User {
         return bundle;
     }
 
-    private final String email;
-    private final String displayName;
-    private final boolean isGuest;
-
-    public User(String email, String displayName, boolean isGuest) {
-        this.email = email;
-        this.displayName = displayName;
-        this.isGuest = isGuest;
-    }
-
     public String getDisplayName() {
         return displayName;
     }
@@ -57,5 +51,11 @@ public class User {
 
     public boolean isGuest() {
         return isGuest;
+    }
+
+    private static class Keys {
+        static final String DISPLAY_NAME = "user_display_name";
+        static final String EMAIL = "user_email";
+        static final String IS_GUEST = "user_is_guest";
     }
 }

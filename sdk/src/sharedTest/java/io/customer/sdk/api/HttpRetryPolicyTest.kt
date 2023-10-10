@@ -42,7 +42,8 @@ class HttpRetryPolicyTest : BaseTest() {
     @Test
     fun nextSleepTime_givenCallManyTimes_expectGetNullAfterRunOutOfRetries() {
         val expectedTimesToGetNull = 10
-        var numberOfTimesToCall = CustomerIOApiRetryPolicy.retryPolicy.count() + expectedTimesToGetNull
+        var numberOfTimesToCall =
+            CustomerIOApiRetryPolicy.retryPolicy.count() + expectedTimesToGetNull
         var actualTimesGotNull = 0
 
         while (numberOfTimesToCall > 0) {

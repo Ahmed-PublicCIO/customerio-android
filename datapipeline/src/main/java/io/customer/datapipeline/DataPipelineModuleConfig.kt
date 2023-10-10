@@ -11,8 +11,7 @@ class DataPipelineModuleConfig(
     class Builder(
         private val writeKey: String,
         val configuration: Configuration.() -> Unit = {}
-    ) :
-        CustomerIOModuleConfig.Builder<DataPipelineModuleConfig> {
+    ) : CustomerIOModuleConfig.Builder<DataPipelineModuleConfig> {
 
         override fun build(): DataPipelineModuleConfig {
             return DataPipelineModuleConfig(

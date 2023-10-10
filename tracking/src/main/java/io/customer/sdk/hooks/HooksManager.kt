@@ -22,9 +22,11 @@ internal class CioHooksManager : HooksManager {
             is ModuleHook.ProfileIdentifiedHook -> map.values.forEach {
                 it.profileIdentifiedHook(hook)
             }
+
             is ModuleHook.BeforeProfileStoppedBeingIdentified -> map.values.forEach {
                 it.beforeProfileStoppedBeingIdentified(hook)
             }
+
             is ModuleHook.ScreenTrackedHook -> map.values.forEach {
                 it.screenTrackedHook(hook)
             }

@@ -16,15 +16,38 @@ import io.customer.android.sample.java_layout.utils.StringUtils;
  * Data class to hold SDK configurations. This is only required by sample app for testing purpose.
  */
 public class CustomerIOSDKConfig {
-    private static class Keys {
-        static final String SITE_ID = "cio_sdk_site_id";
-        static final String API_KEY = "cio_sdk_api_key";
-        static final String TRACKING_URL = "cio_sdk_tracking_url";
-        static final String BQ_SECONDS_DELAY = "cio_sdk_bq_seconds_delay";
-        static final String BQ_MIN_TASKS = "cio_sdk_bq_min_tasks";
-        static final String TRACK_SCREENS = "cio_sdk_track_screens";
-        static final String TRACK_DEVICE_ATTRIBUTES = "cio_sdk_track_device_attributes";
-        static final String DEBUG_MODE = "cio_sdk_debug_mode";
+    @NonNull
+    private final String siteId;
+    @NonNull
+    private final String apiKey;
+    @Nullable
+    private final String trackingURL;
+    @Nullable
+    private final Double backgroundQueueSecondsDelay;
+    @Nullable
+    private final Integer backgroundQueueMinNumOfTasks;
+    @Nullable
+    private final Boolean screenTrackingEnabled;
+    @Nullable
+    private final Boolean deviceAttributesTrackingEnabled;
+    @Nullable
+    private final Boolean debugModeEnabled;
+    public CustomerIOSDKConfig(@NonNull String siteId,
+                               @NonNull String apiKey,
+                               @Nullable String trackingURL,
+                               @Nullable Double backgroundQueueSecondsDelay,
+                               @Nullable Integer backgroundQueueMinNumOfTasks,
+                               @Nullable Boolean screenTrackingEnabled,
+                               @Nullable Boolean deviceAttributesTrackingEnabled,
+                               @Nullable Boolean debugModeEnabled) {
+        this.siteId = siteId;
+        this.apiKey = apiKey;
+        this.trackingURL = trackingURL;
+        this.backgroundQueueSecondsDelay = backgroundQueueSecondsDelay;
+        this.backgroundQueueMinNumOfTasks = backgroundQueueMinNumOfTasks;
+        this.screenTrackingEnabled = screenTrackingEnabled;
+        this.deviceAttributesTrackingEnabled = deviceAttributesTrackingEnabled;
+        this.debugModeEnabled = debugModeEnabled;
     }
 
     public static CustomerIOSDKConfig getDefaultConfigurations() {
@@ -80,41 +103,6 @@ public class CustomerIOSDKConfig {
     }
 
     @NonNull
-    private final String siteId;
-    @NonNull
-    private final String apiKey;
-    @Nullable
-    private final String trackingURL;
-    @Nullable
-    private final Double backgroundQueueSecondsDelay;
-    @Nullable
-    private final Integer backgroundQueueMinNumOfTasks;
-    @Nullable
-    private final Boolean screenTrackingEnabled;
-    @Nullable
-    private final Boolean deviceAttributesTrackingEnabled;
-    @Nullable
-    private final Boolean debugModeEnabled;
-
-    public CustomerIOSDKConfig(@NonNull String siteId,
-                               @NonNull String apiKey,
-                               @Nullable String trackingURL,
-                               @Nullable Double backgroundQueueSecondsDelay,
-                               @Nullable Integer backgroundQueueMinNumOfTasks,
-                               @Nullable Boolean screenTrackingEnabled,
-                               @Nullable Boolean deviceAttributesTrackingEnabled,
-                               @Nullable Boolean debugModeEnabled) {
-        this.siteId = siteId;
-        this.apiKey = apiKey;
-        this.trackingURL = trackingURL;
-        this.backgroundQueueSecondsDelay = backgroundQueueSecondsDelay;
-        this.backgroundQueueMinNumOfTasks = backgroundQueueMinNumOfTasks;
-        this.screenTrackingEnabled = screenTrackingEnabled;
-        this.deviceAttributesTrackingEnabled = deviceAttributesTrackingEnabled;
-        this.debugModeEnabled = debugModeEnabled;
-    }
-
-    @NonNull
     public String getSiteId() {
         return siteId;
     }
@@ -138,7 +126,6 @@ public class CustomerIOSDKConfig {
     public Integer getBackgroundQueueMinNumOfTasks() {
         return backgroundQueueMinNumOfTasks;
     }
-
 
     @Nullable
     public Boolean isScreenTrackingEnabled() {
@@ -172,5 +159,16 @@ public class CustomerIOSDKConfig {
 
     public boolean debugModeEnabled() {
         return Boolean.FALSE != debugModeEnabled;
+    }
+
+    private static class Keys {
+        static final String SITE_ID = "cio_sdk_site_id";
+        static final String API_KEY = "cio_sdk_api_key";
+        static final String TRACKING_URL = "cio_sdk_tracking_url";
+        static final String BQ_SECONDS_DELAY = "cio_sdk_bq_seconds_delay";
+        static final String BQ_MIN_TASKS = "cio_sdk_bq_min_tasks";
+        static final String TRACK_SCREENS = "cio_sdk_track_screens";
+        static final String TRACK_DEVICE_ATTRIBUTES = "cio_sdk_track_device_attributes";
+        static final String DEBUG_MODE = "cio_sdk_debug_mode";
     }
 }

@@ -4,14 +4,13 @@ import android.content.Intent
 import androidx.annotation.VisibleForTesting
 import io.customer.messagingpush.MessagingPushModuleConfig
 import io.customer.messagingpush.util.PushTrackingUtil
-import io.customer.sdk.data.request.MetricEvent
-import io.customer.sdk.repository.TrackRepository
+import io.customer.sdk.CustomerIOImplementation
 import io.customer.sdk.util.Logger
 
 internal class PushMessageProcessorImpl(
     private val logger: Logger,
     private val moduleConfig: MessagingPushModuleConfig,
-    private val trackRepository: TrackRepository
+    private val customerIOImplementation: CustomerIOImplementation
 ) : PushMessageProcessor {
 
     /**
@@ -78,10 +77,10 @@ internal class PushMessageProcessorImpl(
     private fun trackDeliveredMetrics(deliveryId: String, deliveryToken: String) {
         // Track delivered event only if auto-tracking is enabled
         if (moduleConfig.autoTrackPushEvents) {
-            trackRepository.trackMetric(
+            customerIOImplementation.trackMetric(
                 deliveryID = deliveryId,
                 deviceToken = deliveryToken,
-                event = MetricEvent.delivered
+                event = "delivered"
             )
         }
     }

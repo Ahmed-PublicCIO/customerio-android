@@ -172,7 +172,8 @@ internal class CustomerIOPushNotificationHandler(
             // check for image in data and notification payload to cater for both simple and rich push
             // data only payload (foreground and background)
             // notification + data payload (foreground)
-            val notificationImage = bundle.getString(IMAGE_KEY) ?: remoteMessage.notification?.imageUrl?.toString()
+            val notificationImage =
+                bundle.getString(IMAGE_KEY) ?: remoteMessage.notification?.imageUrl?.toString()
             if (notificationImage != null) {
                 addImage(notificationImage, notificationBuilder, body)
             }

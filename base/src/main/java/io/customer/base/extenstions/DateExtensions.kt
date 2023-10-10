@@ -1,6 +1,6 @@
 package io.customer.base.extenstions
 
-import java.util.*
+import java.util.Date
 import java.util.concurrent.TimeUnit
 
 fun Date.getUnixTimestamp(): Long {

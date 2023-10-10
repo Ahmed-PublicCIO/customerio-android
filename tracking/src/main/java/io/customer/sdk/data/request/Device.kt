@@ -3,7 +3,7 @@ package io.customer.sdk.data.request
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import io.customer.sdk.data.model.CustomAttributes
-import java.util.*
+import java.util.Date
 
 @JsonClass(generateAdapter = true)
 data class Device(

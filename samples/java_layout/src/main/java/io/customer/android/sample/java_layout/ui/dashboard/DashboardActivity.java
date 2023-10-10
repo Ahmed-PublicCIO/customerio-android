@@ -37,9 +37,6 @@ import io.customer.android.sample.java_layout.utils.ViewUtils;
 
 public class DashboardActivity extends BaseActivity<ActivityDashboardBinding> {
 
-    private AuthViewModel authViewModel;
-    private CustomerIORepository customerIORepository;
-
     private final ActivityResultLauncher<Intent> notificationSettingsRequestLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (isNotificationPermissionGranted()) {
@@ -55,6 +52,8 @@ public class DashboardActivity extends BaseActivity<ActivityDashboardBinding> {
                     showPushPermissionDeniedAlert(R.string.notification_permission_denied);
                 }
             });
+    private AuthViewModel authViewModel;
+    private CustomerIORepository customerIORepository;
 
     @Override
     protected ActivityDashboardBinding inflateViewBinding() {

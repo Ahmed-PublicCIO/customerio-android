@@ -1,7 +1,7 @@
 package io.customer.sdk.data.store
 
 import android.os.Build
-import java.util.*
+import java.util.Locale
 
 interface BuildStore {
 

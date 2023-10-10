@@ -23,11 +23,14 @@ internal class AndroidSimpleTimer(
     private val dispatchersProvider: DispatchersProvider
 ) : SimpleTimer {
 
-    @Volatile private var countdownTimer: CountDownTimer? = null
+    @Volatile
+    private var countdownTimer: CountDownTimer? = null
 
-    @Volatile private var startTimerMainThreadJob: Job? = null
+    @Volatile
+    private var startTimerMainThreadJob: Job? = null
 
-    @Volatile private var timerAlreadyScheduled = false
+    @Volatile
+    private var timerAlreadyScheduled = false
     private val instanceIdentifier = String.random
 
     override fun scheduleAndCancelPrevious(seconds: Seconds, block: () -> Unit) {

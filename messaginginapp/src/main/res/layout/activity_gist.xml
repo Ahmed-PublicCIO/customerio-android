@@ -3,8 +3,9 @@
     android:id="@+id/modalGistViewLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
-    android:alpha="0">
+    android:alpha="0"
+    android:visibility="gone">
+
     <io.customer.messaginginapp.gist.presentation.GistView
         android:id="@+id/gistView"
         android:layout_width="match_parent"

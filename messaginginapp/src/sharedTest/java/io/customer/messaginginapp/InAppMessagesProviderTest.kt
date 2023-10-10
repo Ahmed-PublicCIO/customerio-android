@@ -179,7 +179,11 @@ internal class InAppMessagesProviderTest : BaseTest() {
         val givenAction = String.random
         val givenName = String.random
         gistInAppMessagesProvider.onAction(givenMessage, givenCurrentRoute, givenAction, givenName)
-        verify(eventListenerMock).messageActionTaken(expectedInAppMessage, actionValue = givenAction, actionName = givenName)
+        verify(eventListenerMock).messageActionTaken(
+            expectedInAppMessage,
+            actionValue = givenAction,
+            actionName = givenName
+        )
     }
 
     @Test
